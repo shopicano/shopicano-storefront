@@ -5,6 +5,10 @@
 <script>
     export default {
         name: 'App',
-        components: {}
+        components: {},
+        mounted() {
+            window.$ = require('jquery');
+            window.JQuery = require('jquery');
+        }
     }
 </script>
