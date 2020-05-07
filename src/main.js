@@ -28,11 +28,6 @@ const router = new VueRouter({
 });
 
 new Vue({
-    mounted() {
-        window.addEventListener('resize', () => {
-            console.log('boom')
-        })
-    },
     render: h => h(App),
     router,
 }).$mount('#app');
