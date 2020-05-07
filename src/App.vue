@@ -1,14 +1,10 @@
 <template>
-    <router-view></router-view>
+    <RouterView :key="$route.fullPath"></RouterView>
 </template>
 
 <script>
     export default {
         name: 'App',
-        components: {},
-        mounted() {
-            window.$ = require('jquery');
-            window.JQuery = require('jquery');
-        }
+        components: {}
     }
 </script>

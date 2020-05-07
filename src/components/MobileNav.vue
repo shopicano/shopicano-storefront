@@ -1,159 +1,56 @@
 <template>
-    <div id="jtv-mobile-menu">
+    <div id="jtv-mobile-menu" class="jtv-mobile-menu" v-bind:style="styleCss">
         <ul>
-            <li><a href="index.html">Home</a>
-                <ul>
-                    <li><a href="../index.html"><span>Home Version 1</span></a></li>
-                    <li><a href="index.html"><span>Home Version 2</span></a></li>
-                    <li><a href="../version3/index.html"><span>Home Version 3</span></a></li>
-                    <li><a href="../version4/index.html"><span>Home Version 4</span></a></li>
-
-                </ul>
+            <li><a href="/">Home</a></li>
+            <li v-for="c in categories" v-bind:key="c.id">
+                <a v-bind:href="c.id" class="active"><span>{{ c.name }}</span></a>
             </li>
-            <li><a href="#">Pages</a>
-                <ul>
-                    <li><a href="shop_grid.html"><span>Shop Grid</span></a>
-                        <ul>
-                            <li><a href="shop_grid_right.html"> <span>Shop Grid Right Sidebar</span></a></li>
-                            <li><a href="shop_grid_fullwidth.html"> <span>Shop Grid Fullwidth</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_list.html"> <span>Shop List</span></a>
-                        <ul>
-                            <li><a href="shop_list_right.html"> <span>Shop List Right Sidebar</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="single_product.html"> <span>Single Product</span></a></li>
-                    <li><a href="shopping_cart.html"> <span>Shopping Cart</span></a></li>
-                    <li><a href="checkout.html"><span>Checkout</span></a></li>
-                    <li><a href="wishlist.html"> <span>Wishlist</span></a></li>
-                    <li><a href="compare.html"><span>Compare</span></a></li>
-                    <li><a href="quick_view.html"><span>Quick View</span></a></li>
-                    <li><a href="404error.html"><span>404 Error Page</span></a></li>
-                </ul>
-            </li>
-            <li><a href="#">Smartphones</a>
-                <ul>
-                    <li><a href="shop_grid.html"><span>Samsung Galaxy</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>Toaster Crossbody</span></a></li>
-                            <li><a href="shop_grid.html"><span>Piper Bag</span></a></li>
-                            <li><a href="shop_grid.html"><span>Leather Bag</span></a></li>
-                            <li><a href="shop_grid.html"><span>Canvas Bag</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Lyf phones</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>Travel Accessories</span></a></li>
-                            <li><a href="shop_grid.html"><span>Gym Phones</span></a></li>
-                            <li><a href="shop_grid.html"><span>Fashion Waist Packs</span></a></li>
-                            <li><a href="shop_grid.html"><span>Messenger Phones</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Apple phones</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>Travel Duffels</span></a></li>
-                            <li><a href="shop_grid.html"><span>Umbrellas</span></a></li>
-                            <li><a href="shop_grid.html"><span>Waist Packs</span></a></li>
-                            <li><a href="shop_grid.html"><span>Travel Gear</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Vivo phones</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>Luggage</span></a></li>
-                            <li><a href="shop_grid.html"><span>Briefcases</span></a></li>
-                            <li><a href="shop_grid.html"><span>Bowling</span></a></li>
-                            <li><a href="shop_grid.html"><span>Bucket Bag</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Blackberry phones</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>Crossbody Bag</span></a></li>
-                            <li><a href="shop_grid.html"><span>Clutch Handbag</span></a></li>
-                            <li><a href="shop_grid.html"><span>Hobo Shoulder</span></a></li>
-                            <li><a href="shop_grid.html"><span>Saddle Bag</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Sony phones</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>BlackBerry</span></a></li>
-                            <li><a href="shop_grid.html"><span>Solo Premium </span></a></li>
-                            <li><a href="shop_grid.html"><span>Laptop Phones</span></a></li>
-                            <li><a href="shop_grid.html"><span>Belts</span></a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="shop_grid.html">Camera & Photo</a>
-                <ul>
-                    <li><a href="shop_grid.html"><span>Photron</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>Elegant </span></a></li>
-                            <li><a href="shop_grid.html"><span>sassy &amp; chic</span></a></li>
-                            <li><a href="shop_grid.html"><span>Women's Satchel</span></a></li>
-                            <li><a href="shop_grid.html"><span>Shoulder Bag</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Canon</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>fashion Backpack</span></a></li>
-                            <li><a href="shop_grid.html"><span>Rose Gold Saffiano</span></a></li>
-                            <li><a href="shop_grid.html"><span>Black Velvet</span></a></li>
-                            <li><a href="shop_grid.html"><span>Leather Handbags</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Nikon</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>Sling Bag</span></a></li>
-                            <li><a href="shop_grid.html"><span>Diaper Phones</span></a></li>
-                            <li><a href="shop_grid.html"><span>Laptop Backpack</span></a></li>
-                            <li><a href="shop_grid.html"><span>Benetton Black </span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Envie</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>Graphite Croco</span></a></li>
-                            <li><a href="shop_grid.html"><span>Swiss Military Red</span></a></li>
-                            <li><a href="shop_grid.html"><span>Hidesign</span></a></li>
-                            <li><a href="shop_grid.html"><span>Benetton</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Aquatan</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>Travel Blue</span></a></li>
-                            <li><a href="shop_grid.html"><span>Charles & Keith</span></a></li>
-                            <li><a href="shop_grid.html"><span>Clutches</span></a></li>
-                            <li><a href="shop_grid.html"><span>wristlets</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="shop_grid.html"><span>Fuji</span></a>
-                        <ul>
-                            <li><a href="shop_grid.html"><span>wallets</span></a></li>
-                            <li><a href="shop_grid.html"><span>shoulder bags</span></a></li>
-                            <li><a href="shop_grid.html"><span>leather totes</span></a></li>
-                            <li><a href="shop_grid.html"><span>satchels</span></a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="shop_grid.html">Laptop bags</a></li>
-            <li><a href="shop_grid.html">Apple Store</a></li>
-            <li><a href="shop_grid.html">Computers</a></li>
         </ul>
         <div class="jtv-top-link-mob">
             <ul class="links">
-                <li><a title="My Account" href="account_page.html">My Account</a></li>
-                <li><a title="Wishlist" href="wishlist.html">Wishlist</a></li>
-                <li><a title="Checkout" href="checkout.html">Checkout</a></li>
-                <li><a title="Blog" href="blog.html"><span>Blog</span></a></li>
-                <li class="last"><a title="Login" href="account_page.html"><span>Login</span></a></li>
+                <li><a title="My Account" href="/#/my-account">My Account</a></li>
+                <li><a title="Wishlist" href="/#/wishlist">Wishlist</a></li>
+                <li><a title="Checkout" href="/#/checkout">Checkout</a></li>
+                <li class="last"><a title="Login" href="/#/login"><span>Login</span></a></li>
             </ul>
         </div>
     </div>
 </template>
 
 <script>
+    import {EventBus} from "@/common/event-bus";
+    import axios from "axios";
+    import Settings from "@/common/settings";
+
     export default {
-        name: "MobileNav"
+        name: "MobileNav",
+        data() {
+            return {
+                categories: [],
+                styleCss: ''
+            }
+        },
+        mounted() {
+            EventBus.$on('nav-action', isOpen => {
+                if (isOpen) {
+                    this.styleCss = 'left: 0px; width: 250px; height: 11988px; display: block; overflow: hidden;';
+                } else {
+                    this.styleCss = '';
+                }
+            });
+
+            this.listCategories();
+        },
+        methods: {
+            listCategories: function () {
+                axios.get(`${Settings.GetUserApiUrl()}/categories?limit=5`).then(resp => {
+                    this.categories = resp.data.data;
+                    this.isLoading = false;
+                }).catch(err => {
+                    this.isLoading = false;
+                    this.errors = err.response.data.title;
+                })
+            }
+        }
     }
 </script>

@@ -14,27 +14,22 @@
                             <div class="jtv-lang-cur-wrapper">
                                 <div class="jtv-inner-box">
                                     <div class="block jtv-language-block">
-                                        <div class="lg-cur">
-                                            <span>
-                                                <img src="/images/english.png" alt="English"/>
-                                                <span class="lg-en">EN</span>
-                                                <i class="fa fa-angle-down"></i>
-                                            </span>
+                                        <div class="lg-cur"><span> <img src="images/english.png" alt="English"> <span
+                                                class="lg-fr">EN</span> <i
+                                                class="fa fa-angle-down"></i> </span>
                                         </div>
                                         <ul>
                                             <li>
-                                                <a class="selected" href="#">
-                                                    <img src="/images/english.png" alt="flag"><span>EN</span>
-                                                </a>
+                                                <a class="selected">
+                                                    <img src="images/english.png" alt="flag"><span>EN</span></a>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="block jtv-currency-block">
-                                        <div class="item-cur">USD<i
-                                                class="fa fa-angle-down"></i>
-                                        </div>
+                                        <div class="item-cur"><span>Currency</span>&nbsp;$ USD<i
+                                                class="fa fa-angle-down"></i></div>
                                         <ul>
-                                            <li><a href="#" title="Dollar">USD</a></li>
+                                            <li><a href="#" title="USD"> $ USD </a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -44,16 +39,10 @@
                         <!-- top links -->
                         <div class="toplinks col-md-7 col-sm-8 col-xs-12 hidden-xs">
                             <ul class="links">
-                                <li class="myaccount"><a title="My Account" href="/my-account"><span
-                                        class="hidden-xs">My Account</span></a></li>
-                                <li class="wishlist"><a title="My Wishlist" href="/wishlist"><span
-                                        class="hidden-xs">Wishlist</span></a></li>
-                                <li class="checkout"><a title="Checkout" href="/checkout"><span
-                                        class="hidden-xs">Checkout</span></a>
-                                </li>
-                                <li class="login"><a href="/login"><span
-                                        class="hidden-xs">Log In</span></a>
-                                </li>
+                                <li><a title="My Account" href="/#/my-account">My Account</a></li>
+                                <li><a title="Wishlist" href="/#/wishlist">Wishlist</a></li>
+                                <li><a title="Checkout" href="/#/checkout">Checkout</a></li>
+                                <li class="last"><a title="Login" href="/#/login"><span>Login</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -70,6 +59,6 @@
 
     export default {
         name: "Header",
-        components: {Nav}
+        components: {Nav},
     }
 </script>

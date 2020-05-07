@@ -9,7 +9,7 @@
                             <ol class="products-list" id="products-list">
                                 <li class="item" v-for="p in products" v-bind:key="p.id">
                                     <div class="product-image">
-                                        <a v-bind:href="'/products/'+p.id"
+                                        <a v-bind:href="'/#/products/'+p.id"
                                            v-bind:title="p.name">
                                             <img class="img-responsive small-image"
                                                  v-bind:src="createImageUrl(p.image)"
@@ -18,7 +18,7 @@
                                     </div>
                                     <div class="product-shop">
                                         <h2 class="product-name">
-                                            <a v-bind:href="'/products/'+p.id"
+                                            <a v-bind:href="'/#/products/'+p.id"
                                                v-bind:title="p.name">
                                                 {{ p.name }}
                                             </a>
@@ -27,7 +27,7 @@
                                                 class="fa fa-star"></i> <i
                                                 class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> <i
                                                 class="fa fa-star-o"></i>
-                                            <p class="rating-links"><a v-bind:href="'/products/'+p.id+'#reviews'">2
+                                            <p class="rating-links"><a v-bind:href="'/#/products/'+p.id+'#reviews'">2
                                                 Review(s)</a></p>
                                         </div>
                                         <div class="desc std">
@@ -35,7 +35,7 @@
                                                 industry. Lorem Ipsum has been the industry's standard dummy
                                                 text ever
                                                 since the 1500s, when an unknown printer...
-                                                <a class="link-learn" title="" v-bind:href="'/products/'+p.id">
+                                                <a class="link-learn" title="" v-bind:href="'/#/products/'+p.id">
                                                     Learn More
                                                 </a>
                                             </p>
@@ -54,7 +54,7 @@
                                             </button>
                                             <span class="add-to-links">
                                                 <a title="Add to Wishlist" class="button link-wishlist"
-                                                   href="wishlist.html">
+                                                   href="/#/wishlist">
                                                     <span>Add to Wishlist</span>
                                                 </a>
                                             </span>

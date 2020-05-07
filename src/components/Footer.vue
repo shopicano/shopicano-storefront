@@ -38,7 +38,7 @@
                             <ul class="links">
                                 <li><a href="/#/my-account">My Account</a></li>
                                 <li><a href="/#/wishlist">Wishlist</a></li>
-                                <li><a href="/#/chart">My Cart</a></li>
+                                <li><a href="/#/cart">My Cart</a></li>
                                 <li><a href="/#/privacy-policy">Privacy Policy</a></li>
                             </ul>
                         </div>

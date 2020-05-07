@@ -3,13 +3,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12 jtv-logo-block">
-                    <div class="logo"><a title="e-commerce" href="/"><img alt="e-commerce"
-                                                                          src="/banner_logo.png"></a>
+                    <div class="logo"><a title="e-commerce" href="/">
+                        <img alt="e-commerce" src="/banner_logo.png" width="200px"></a>
                     </div>
                     <!-- Navbar -->
 
                     <div class="nav-inner">
-                        <div class="mm-toggle-wrap hidden-lg">
+                        <div class="mm-toggle-wrap hidden-lg" v-on:click="onNavClick">
                             <div class="mm-toggle"><i class="fa fa-align-justify"></i><span
                                     class="mm-label hidden">Menu</span></div>
                         </div>
@@ -111,12 +111,14 @@
 <script>
     import axios from 'axios'
     import Settings from "@/common/settings";
+    import {EventBus} from "@/common/event-bus";
 
     export default {
         name: "Nav",
         data() {
             return {
-                categories: []
+                categories: [],
+                isNavOpen: false
             }
         },
         mounted() {
@@ -131,6 +133,10 @@
                     this.isLoading = false;
                     this.errors = err.response.data.title;
                 })
+            },
+            onNavClick: function () {
+                this.isNavOpen = !this.isNavOpen;
+                EventBus.$emit('nav-action', this.isNavOpen);
             }
         }
     }
