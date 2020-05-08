@@ -6,63 +6,26 @@
                     <div class="col-main">
                         <div class="product-view">
                             <div class="product-essential">
-                                <form action="#" method="post" id="product">
+                                <div>
                                     <div class="product-img-box col-lg-5 col-sm-5 col-xs-12">
                                         <div class="new-label new-top-left"> New</div>
                                         <div class="product-image">
-                                            <div class="product-full"><img class="img-responsive"
-                                                                           id="product-zoom1"
-                                                                           src="images/products/img01.jpg"
-                                                                           data-zoom-image="images/products/img01.jpg"
-                                                                           alt="product-image"/></div>
-                                            <div class="more-views">
-                                                <div class="slider-items-products">
-                                                    <div id="gallery_01"
-                                                         class="product-flexslider hidden-buttons product-img-thumb">
-                                                        <div class="slider-items slider-width-col4 block-content">
-                                                            <div class="more-views-items"><a href="#"
-                                                                                             data-image="images/products/img01.jpg"
-                                                                                             data-zoom-image="images/products/img01.jpg">
-                                                                <img class="img-responsive" id="product-zoom2"
-                                                                     src="images/products/img01.jpg"
-                                                                     alt="product-image"/> </a></div>
-                                                            <div class="more-views-items"><a href="#"
-                                                                                             data-image="images/products/img01.jpg"
-                                                                                             data-zoom-image="images/products/img01.jpg">
-                                                                <img class="img-responsive" id="product-zoom3"
-                                                                     src="images/products/img01.jpg"
-                                                                     alt="product-image"/> </a></div>
-                                                            <div class="more-views-items"><a href="#"
-                                                                                             data-image="images/products/img01.jpg"
-                                                                                             data-zoom-image="images/products/img01.jpg">
-                                                                <img class="img-responsive" id="product-zoom4"
-                                                                     src="images/products/img01.jpg"
-                                                                     alt="product-image"/> </a></div>
-                                                            <div class="more-views-items"><a href="#"
-                                                                                             data-image="images/products/img01.jpg"
-                                                                                             data-zoom-image="images/products/img01.jpg">
-                                                                <img class="img-responsive" id="product-zoom5"
-                                                                     src="images/products/img01.jpg"
-                                                                     alt="product-image"/> </a></div>
-                                                            <div class="more-views-items"><a href="#"
-                                                                                             data-image="images/products/img01.jpg"
-                                                                                             data-zoom-image="images/products/img01.jpg">
-                                                                <img class="img-responsive" id="product-zoom"
-                                                                     src="images/products/img01.jpg"
-                                                                     alt="product-image"/> </a></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="product-full">
+                                                <slider animation="fade"
+                                                        v-model="sliderValue" :duration="5000" :speed="1000">
+                                                    <SliderItem
+                                                            v-for="(i, index) in productImages"
+                                                            :key="index">
+                                                        <img width="auto" height="auto" v-bind:src="i"/>
+                                                    </SliderItem>
+                                                </slider>
                                             </div>
                                         </div>
-                                        <!-- end: more-images -->
                                     </div>
+
                                     <div class="product-shop col-lg-7 col-sm-7 col-xs-12">
-                                        <div class="product-next-prev"><a class="product-next"
-                                                                          href="#"><span></span></a> <a
-                                                class="product-prev" href="#"><span></span></a></div>
                                         <div class="product-name">
-                                            <h1>Lorem ipsum dolor sit amet</h1>
+                                            <h1>{{ productDetails.name }}</h1>
                                         </div>
                                         <div class="rating"><i class="fa fa-star"></i> <i
                                                 class="fa fa-star"></i> <i class="fa fa-star"></i> <i
@@ -75,30 +38,26 @@
                                             <div class="price-box">
                                                 <p class="special-price"><span
                                                         class="price-label">Special Price</span> <span
-                                                        id="product-price-48" class="price"> $599.99 </span></p>
-                                                <p class="old-price"><span
-                                                        class="price-label">Regular Price:</span> <span
-                                                        class="price"> $499.99 </span></p>
+                                                        id="product-price-48"
+                                                        class="price"> ${{productDetails.price}} </span></p>
+                                                <!--                                                <p class="old-price"><span-->
+                                                <!--                                                        class="price-label">Regular Price:</span> <span-->
+                                                <!--                                                        class="price"> $ {{ productDetails.price }} </span></p>-->
                                             </div>
                                         </div>
                                         <div class="info-orther">
-                                            <p>Item Code: #12345678</p>
-                                            <p>Availability: <span class="in-stock">In stock</span></p>
-                                            <p>Condition: New</p>
-                                        </div>
-                                        <div class="short-description">
-                                            <h2>Quick Overview</h2>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-                                                fringilla augue nec est tristique auctor. Donec non est at
-                                                libero vulputate rutrum. Morbi ornare lectus quis justo gravida
-                                                semper. Nulla tellus mi, vulputate adipiscing cursus eu,
-                                                suscipit id nulla. Donec a neque libero. Pellentesque aliquet,
-                                                sem eget laoreet ultrices, ipsum metus feugiat sem, quis
-                                                fermentum turpis eros eget velit. Donec ac tempus ante. </p>
+                                            <p>Seller: {{ productDetails.store_name }}</p>
+                                            <p>SKU: {{ productDetails.sku }}</p>
+                                            <p>Availability:
+                                                <span v-if="productDetails.stock>0" class="in-stock">In stock</span>
+                                                <span v-if="productDetails.stock===0"
+                                                      class="out-of-stock">Out of stock</span>
+                                            </p>
                                         </div>
                                         <div class="form-option">
-                                            <p class="form-option-title">Available Options:</p>
-                                            <div class="attributes">
+                                            <p v-if="productDetails.stock>0" class="form-option-title">Available
+                                                Options:</p>
+                                            <div v-if="productDetails.stock>0" class="attributes">
                                                 <div class="attribute-label">Color:</div>
                                                 <div class="attribute-list">
                                                     <ul class="list-color">
@@ -117,32 +76,35 @@
                                                 </div>
                                             </div>
                                             <div class="add-to-box">
-                                                <div class="add-to-cart">
+                                                <div v-if="productDetails.stock>0" class="add-to-cart">
                                                     <div class="pull-left">
                                                         <div class="custom pull-left">
                                                             <label>Qty :</label>
-                                                            <button onClick="var result = document.getElementById('qty'); var qty = result.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 0 ) result.value--;return false;"
+                                                            <button v-on:click="adjustQuantity(-1)"
                                                                     class="reduced items-count" type="button"><i
                                                                     class="fa fa-minus">&nbsp;</i></button>
                                                             <input type="text" class="input-text qty"
-                                                                   title="Qty" value="1" maxlength="12" id="qty"
+                                                                   title="Qty" v-bind:value="numberOfQuantity"
+                                                                   maxlength="12" id="qty"
                                                                    name="qty">
-                                                            <button onClick="var result = document.getElementById('qty'); var qty = result.value; if( !isNaN( qty )) result.value++;return false;"
+                                                            <button v-on:click="adjustQuantity(1)"
                                                                     class="increase items-count" type="button">
                                                                 <i class="fa fa-plus">&nbsp;</i></button>
                                                         </div>
                                                     </div>
-                                                    <button onClick="productAddToCartForm.submit(this)"
+                                                    <button v-if="numberOfQuantity===0" v-on:click="onAddToCart"
                                                             class="button btn-cart" title="Add to Cart"
                                                             type="button">Add to Cart
+                                                    </button>
+                                                    <button v-if="numberOfQuantity!==0" v-on:click="onAddToCart"
+                                                            class="button btn-cart" title="Add to Cart"
+                                                            type="button">Update to Cart
                                                     </button>
                                                 </div>
                                                 <div class="email-addto-box">
                                                     <ul class="add-to-links">
-                                                        <li><a class="link-wishlist" href="wishlist.html"><span>Add to Wishlist</span></a>
-                                                        </li>
-                                                        <li><span class="separator">|</span> <a
-                                                                class="link-compare" href="compare.html"><span>Add to Compare</span></a>
+                                                        <li><a class="link-wishlist"
+                                                               href=""><span>Add to Wishlist</span></a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -155,7 +117,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -164,66 +126,12 @@
                             <ul id="product-detail-tab" class="nav nav-tabs product-tabs">
                                 <li class="active"><a href="#product_tabs_description" data-toggle="tab">
                                     Product Description </a></li>
-                                <li><a href="#product_tabs_tags" data-toggle="tab">Tags</a></li>
                                 <li><a href="#reviews_tabs" data-toggle="tab">Reviews</a></li>
-                                <li><a href="#product_tabs_custom" data-toggle="tab">Custom Tab</a></li>
-                                <li><a href="#product_tabs_custom1" data-toggle="tab">Custom Tab1</a></li>
                             </ul>
                             <div id="productTabContent" class="tab-content">
                                 <div class="tab-pane fade in active" id="product_tabs_description">
                                     <div class="std">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-                                            fringilla augue nec est tristique auctor. Donec non est at libero
-                                            vulputate rutrum. Morbi ornare lectus quis justo gravida semper.
-                                            Nulla tellus mi, vulputate adipiscing cursus eu, suscipit id nulla.
-                                            Donec a neque libero. Pellentesque aliquet, sem eget laoreet
-                                            ultrices, ipsum metus feugiat sem, quis fermentum turpis eros eget
-                                            velit. Donec ac tempus ante. Fusce ultricies massa massa. Fusce
-                                            aliquam, purus eget sagittis vulputate, sapien libero hendrerit est,
-                                            sed commodo augue nisi non neque. Lorem ipsum dolor sit amet,
-                                            consectetur adipiscing elit. Sed tempor, lorem et placerat
-                                            vestibulum, metus nisi posuere nisl, in accumsan elit odio quis mi.
-                                            Cras neque metus, consequat et blandit et, luctus a nunc. Etiam
-                                            gravida vehicula tellus, in imperdiet ligula euismod eget.
-                                            Pellentesque habitant morbi tristique senectus et netus et malesuada
-                                            fames ac turpis egestas. Nam erat mi, rutrum at sollicitudin
-                                            rhoncus, ultricies posuere erat. Duis convallis, arcu nec aliquam
-                                            consequat, purus felis vehicula felis, a dapibus enim lorem nec
-                                            augue.</p>
-                                        <p> Nunc facilisis sagittis ullamcorper. Proin lectus ipsum, gravida et
-                                            mattis vulputate, tristique ut lectus. Sed et lorem nunc. Vestibulum
-                                            ante ipsum primis in faucibus orci luctus et ultrices posuere
-                                            cubilia Curae; Aenean eleifend laoreet congue. Vivamus adipiscing
-                                            nisl ut dolor dignissim semper. Nulla luctus malesuada tincidunt.
-                                            Class aptent taciti sociosqu ad litora torquent per conubia nostra,
-                                            per inceptos himenaeos. Integer enim purus, posuere at ultricies eu,
-                                            placerat a felis. Suspendisse aliquet urna pretium eros convallis
-                                            interdum. Quisque in arcu id dui vulputate mollis eget non arcu.
-                                            Aenean et nulla purus. Mauris vel tellus non nunc mattis
-                                            lobortis.</p>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="product_tabs_tags">
-                                    <div class="box-collateral box-tags">
-                                        <div class="tags">
-                                            <form id="addTagForm" action="#" method="get">
-                                                <div class="form-add-tags">
-                                                    <label for="productTagName">Add Tags:</label>
-                                                    <div class="input-box">
-                                                        <input class="input-text" name="productTagName"
-                                                               id="productTagName" type="text">
-                                                        <button type="button" title="Add Tags"
-                                                                class=" button btn-add"
-                                                                onClick="submitTagForm()"><span>Add Tags</span>
-                                                        </button>
-                                                    </div>
-                                                    <!--input-box-->
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!--tags-->
-                                        <p class="note">Use spaces to separate tags. Use single quotes (') for
-                                            phrases.</p>
+                                        {{ productDetails.description }}
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="reviews_tabs">
@@ -541,36 +449,6 @@
                                         <div class="clear"></div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="product_tabs_custom">
-                                    <div class="product-tabs-content-inner clearfix">
-                                        <p><strong>Lorem Ipsum</strong><span>&nbsp;is
-                      simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                      has been the industry's standard dummy text ever since the 1500s, when
-                      an unknown printer took a galley of type and scrambled it to make a type
-                      specimen book. It has survived not only five centuries, but also the
-                      leap into electronic typesetting, remaining essentially unchanged. It
-                      was popularised in the 1960s with the release of Letraset sheets
-                      containing Lorem Ipsum passages, and more recently with desktop
-                      publishing software like Aldus PageMaker including versions of Lorem
-                      Ipsum.</span></p>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="product_tabs_custom1">
-                                    <div class="product-tabs-content-inner clearfix">
-                                        <p><strong> Comfortable </strong><span>&nbsp;preshrunk shirts. Highest Quality Printing.  6.1 oz. 100% preshrunk heavyweight cotton Shoulder-to-shoulder taping Double-needle sleeves and bottom hem
-
-                      Lorem Ipsumis
-                      simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                      has been the industry's standard dummy text ever since the 1500s, when
-                      an unknown printer took a galley of type and scrambled it to make a type
-                      specimen book. It has survived not only five centuries, but also the
-                      leap into electronic typesetting, remaining essentially unchanged. It
-                      was popularised in the 1960s with the release of Letraset sheets
-                      containing Lorem Ipsum passages, and more recently with desktop
-                      publishing software like Aldus PageMaker including versions of Lorem
-                      Ipsum.</span></p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -581,7 +459,83 @@
 </template>
 
 <script>
+    import axios from "axios";
+    import Settings from "@/common/settings";
+    import Cart from "@/common/cart";
+    import {Slider, SliderItem} from 'vue-easy-slider'
+    import {EventBus} from "@/common/event-bus";
+
     export default {
         name: "ProductDetails",
+        components: {Slider, SliderItem},
+        data() {
+            return {
+                productDetails: Object,
+                numberOfQuantity: 0,
+                sliderValue: 1,
+                productImages: [],
+            }
+        },
+        mounted() {
+            this.getProductDetails(this.$route.params.id);
+        },
+        methods: {
+            getProductDetails: function (slug) {
+                axios.get(`${Settings.GetUserApiUrl()}/products/` + slug).then(resp => {
+                    this.productDetails = resp.data.data;
+
+                    let images = [];
+                    images.push(this.createImageUrl(this.productDetails.image));
+
+                    if (this.productDetails.additional_images !== null) {
+                        for (let i = 0; i < this.productDetails.additional_images.length; i++) {
+                            images.push(this.createImageUrl(this.productDetails.additional_images[i]));
+                        }
+                    }
+
+                    this.productImages = images;
+
+                    console.log(this.productImages);
+
+                    if (Cart.is_added(this.$ls, this.productDetails.id)) {
+                        this.numberOfQuantity = Cart.get_item(this.$ls, this.productDetails.id).quantity;
+                    }
+
+                    this.isLoading = false;
+                }).catch(err => {
+                    console.log(err);
+
+                    this.isLoading = false;
+                    this.errors = err.response.data.title;
+                })
+            },
+            adjustQuantity: function (change) {
+                if (this.numberOfQuantity + change < 0) {
+                    return
+                }
+                if (this.productDetails.max_quantity_count !== 0 && (this.numberOfQuantity + change) <= this.productDetails.max_quantity_count) {
+                    this.numberOfQuantity += change;
+                }
+            },
+            onAddToCart: function () {
+                if (this.numberOfQuantity === 0) {
+                    return
+                }
+
+                Cart.add(this.$ls, {
+                    id: this.productDetails.id,
+                    quantity: this.numberOfQuantity,
+                    name: this.productDetails.name,
+                    image: this.productDetails.image,
+                    price: this.productDetails.price,
+                    slug: this.productDetails.slug
+                });
+
+                EventBus.$emit('cart-updated', true);
+            },
+            createImageUrl: function (path) {
+                return Settings.GetMediaUrl() + path;
+            },
+        }
     }
 </script>

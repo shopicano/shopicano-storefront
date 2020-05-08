@@ -31,33 +31,18 @@
                                                 Review(s)</a></p>
                                         </div>
                                         <div class="desc std">
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                industry. Lorem Ipsum has been the industry's standard dummy
-                                                text ever
-                                                since the 1500s, when an unknown printer...
-                                                <a class="link-learn" title="" v-bind:href="'/#/products/'+p.slug">
-                                                    Learn More
-                                                </a>
-                                            </p>
+                                            <i class="fa fa-shopping-cart"> Seller: <span
+                                                    class="text-primary">{{ p.store_name }}</span></i>
                                         </div>
                                         <div class="price-box">
-                                            <!--                                            <p class="old-price">-->
-                                            <!--                                                <span class="price-label"></span><span class="price">$442.99</span>-->
-                                            <!--                                            </p>-->
                                             <p class="special-price">
                                                 <span class="price-label"></span><span
                                                     class="price">${{ p.price }}</span></p>
                                         </div>
                                         <div class="actions">
-                                            <button class="button btn-cart" title="Add to Cart" type="button">
-                                                <span>Add to Cart</span>
-                                            </button>
-                                            <span class="add-to-links">
-                                                <a title="Add to Wishlist" class="button link-wishlist"
-                                                   href="/#/wishlist">
-                                                    <span>Add to Wishlist</span>
-                                                </a>
-                                            </span>
+                                            <a class="button btn-cart" v-bind:href="'/#/products/'+p.slug">
+                                                <span>View Details</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </li>
@@ -119,25 +104,25 @@
                             </div>
                         </div>
 
-                        <div class="block block-list block-viewed">
-                            <div class="block-title"> Recently Viewed</div>
-                            <div class="block-content">
-                                <ol id="recently-viewed-items">
-                                    <li class="item">
-                                        <p class="product-name"><a href="#"><i class="fa fa-angle-right"></i>Product
-                                            Title Here</a></p>
-                                    </li>
-                                    <li class="item">
-                                        <p class="product-name"><a href="#"><i class="fa fa-angle-right"></i>Product
-                                            Title Here</a></p>
-                                    </li>
-                                    <li class="item last">
-                                        <p class="product-name"><a href="#"><i class="fa fa-angle-right"></i>Product
-                                            Title Here</a></p>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
+                        <!--                        <div class="block block-list block-viewed">-->
+                        <!--                            <div class="block-title"> Recently Viewed</div>-->
+                        <!--                            <div class="block-content">-->
+                        <!--                                <ol id="recently-viewed-items">-->
+                        <!--                                    <li class="item">-->
+                        <!--                                        <p class="product-name"><a href="#"><i class="fa fa-angle-right"></i>Product-->
+                        <!--                                            Title Here</a></p>-->
+                        <!--                                    </li>-->
+                        <!--                                    <li class="item">-->
+                        <!--                                        <p class="product-name"><a href="#"><i class="fa fa-angle-right"></i>Product-->
+                        <!--                                            Title Here</a></p>-->
+                        <!--                                    </li>-->
+                        <!--                                    <li class="item last">-->
+                        <!--                                        <p class="product-name"><a href="#"><i class="fa fa-angle-right"></i>Product-->
+                        <!--                                            Title Here</a></p>-->
+                        <!--                                    </li>-->
+                        <!--                                </ol>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
                     </aside>
                 </div>
             </div>

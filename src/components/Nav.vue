@@ -28,59 +28,50 @@
                             <div class="top-cart-contain">
                                 <div class="mini-cart">
                                     <div data-toggle="dropdown" data-hover="dropdown"
-                                         class="basket dropdown-toggle"><a href="#">
-                                        <div class="shoppingcart-inner"><span class="cart-title"><i
-                                                class="fa fa-shopping-cart"></i></span> <span
-                                                class="cart_count">2</span></div>
-                                    </a></div>
+                                         class="basket dropdown-toggle">
+                                        <a href="/#/checkout">
+                                            <div class="shoppingcart-inner">
+                                            <span class="cart-title">
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </span>
+                                                <span class="cart_count">{{ number_of_items }}</span>
+                                            </div>
+                                        </a>
+                                    </div>
                                     <div>
                                         <div class="top-cart-content">
-                                            <div class="block-subtitle hidden-xs">Recently added
-                                                item(s)
+                                            <div v-if="number_of_items!==0" class="block-subtitle hidden-xs">Recently
+                                                Added
+                                                Item(s)
                                             </div>
-                                            <ul id="cart-sidebar" class="mini-products-list">
-                                                <li class="item odd"><a href="shopping_cart.html"
-                                                                        title="Product Title Here "
-                                                                        class="product-image"><img
-                                                        src="images/products/img01.jpg" alt="html theme"
-                                                        width="65"></a>
-                                                    <div class="product-details"><a href="#"
-                                                                                    title="Remove This Item"
-                                                                                    class="remove-cart"><i
-                                                            class="pe-7s-close"></i></a>
-                                                        <p class="product-name"><a
-                                                                href="shopping_cart.html">
-                                                            Product Title Here </a></p>
-                                                        <strong>1</strong> x <span
-                                                                class="price">$299.00</span>
-                                                    </div>
-                                                </li>
-                                                <li class="item last odd"><a href="shopping_cart.html"
-                                                                             title="Product Title Here "
-                                                                             class="product-image"><img
-                                                        src="images/products/img01.jpg" alt="html theme"
-                                                        width="65"></a>
-                                                    <div class="product-details"><a href="#"
-                                                                                    title="Remove This Item"
-                                                                                    class="remove-cart"><i
-                                                            class="pe-7s-close"></i></a>
-                                                        <p class="product-name"><a
-                                                                href="shopping_cart.html">
-                                                            Product Title Here </a></p>
-                                                        <strong>2</strong> x <span
-                                                                class="price">$99.00</span>
+                                            <div v-if="number_of_items===0" class="block-subtitle hidden-xs">
+                                                No Items Added Yet
+                                            </div>
+                                            <ul v-if="number_of_items!==0" id="cart-sidebar" class="mini-products-list">
+                                                <li v-for="i in cart_items" class="item odd" v-bind:key="i.id">
+                                                    <a v-bind:href="'/#/products/'+i.slug"
+                                                       v-bind:title="i.name" class="product-image">
+                                                        <img v-bind:src="createImageUrl(i.image)"
+                                                             width="65"></a>
+                                                    <div class="product-details">
+                                                        <a class="remove-cart">
+                                                            <i class="pe-7s-close"
+                                                               v-on:click="onCartItemRemoveClicked(i.id)"></i>
+                                                        </a>
+                                                        <p class="product-name">
+                                                            <a v-bind:href="'/#/products/'+i.slug">{{ i.name }}</a>
+                                                        </p>
+                                                        <strong>{{ i.quantity }}</strong> x <span
+                                                            class="price">${{ i.price }}</span>
                                                     </div>
                                                 </li>
                                             </ul>
-                                            <div class="top-subtotal">Subtotal: <span
-                                                    class="price">$389.00</span></div>
-                                            <div class="actions">
-                                                <button class="btn-checkout" type="button"><i
-                                                        class="fa fa-check"></i><span>Checkout</span>
-                                                </button>
-                                                <button class="view-cart" type="button"><i
-                                                        class="fa fa-shopping-cart"></i>
-                                                    <span>View Cart</span>
+                                            <div v-if="number_of_items!==0" class="top-subtotal">Subtotal: <span
+                                                    class="price">${{ sub_total }}</span></div>
+                                            <div v-if="number_of_items!==0" class="actions">
+                                                <button class="btn-checkout" type="button"
+                                                        v-on:click="onCheckoutClicked">
+                                                    <span>Checkout</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -88,6 +79,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="jtv-search-block">
                             <div class="search">
                                 <input class="search_box" type="checkbox" id="search_box">
@@ -112,16 +104,27 @@
     import axios from 'axios'
     import Settings from "@/common/settings";
     import {EventBus} from "@/common/event-bus";
+    import Cart from "@/common/cart";
 
     export default {
         name: "Nav",
         data() {
             return {
                 categories: [],
-                isNavOpen: false
+                isNavOpen: false,
+                cart_items: [],
+                sub_total: 0,
+                number_of_items: 0
             }
         },
         mounted() {
+            EventBus.$on('cart-updated', ok => {
+                if (ok) {
+                    this.populateFromCart();
+                }
+            });
+
+            this.populateFromCart();
             this.listCategories();
         },
         methods: {
@@ -137,6 +140,30 @@
             onNavClick: function () {
                 this.isNavOpen = !this.isNavOpen;
                 EventBus.$emit('nav-action', this.isNavOpen);
+            },
+            populateFromCart: function () {
+                this.cart_items = Cart.get(this.$ls);
+                this.sub_total = 0;
+                this.number_of_items = 0;
+
+                if (Cart.is_empty(this.$ls)) {
+                    this.cart_items = []
+                }
+
+                for (let i = 0; i < this.cart_items.length; i++) {
+                    this.sub_total += (this.cart_items[i].price * this.cart_items[i].quantity);
+                    this.number_of_items += this.cart_items[i].quantity;
+                }
+            },
+            createImageUrl: function (path) {
+                return Settings.GetMediaUrl() + path;
+            },
+            onCheckoutClicked: function () {
+                this.$router.push('/checkout')
+            },
+            onCartItemRemoveClicked: function (id) {
+                Cart.remove_item(this.$ls, id);
+                this.populateFromCart();
             }
         }
     }

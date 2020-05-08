@@ -11,7 +11,9 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
+    "vue-easy-slider": "^5.3.2",
     "vue-jquery": "^1.0.6",
+    "vue-ls": "^3.2.1",
     "vue-router": "^3.1.6"
   },
   "devDependencies": {

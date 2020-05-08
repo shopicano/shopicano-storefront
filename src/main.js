@@ -5,9 +5,22 @@ import VueRouter from "vue-router"
 import Index from "@/components/Index";
 import ProductDetails from "@/components/ProductDetails";
 import vjquery from 'vue-jquery';
+import Storage from 'vue-ls';
+import Checkout from "@/components/Checkout";
+import SessionStore from "@/common/session_store";
+import Login from "@/components/Login";
+import CreateAccount from "@/components/CreateAccount";
 
 Vue.use(vjquery);
 Vue.use(VueRouter);
+
+let options = {
+    namespace: 'shopicano__', // key prefix
+    name: 'ls',
+    storage: 'local', // storage name session, local, memory
+};
+
+Vue.use(Storage, options);
 
 Vue.config.productionTip = false;
 
@@ -19,6 +32,52 @@ const routes = [
     {
         path: '/products/:id',
         component: ProductDetails,
+    },
+    {
+        path: '/checkout',
+        component: Checkout,
+        beforeEnter: (to, from, next) => {
+            if (!SessionStore.IsLoggedIn(Vue.ls)) {
+                SessionStore.setReturnPath(Vue.ls, '/checkout');
+                next({path: '/login'});
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/my-account',
+        component: Checkout,
+        beforeEnter: (to, from, next) => {
+            if (!SessionStore.IsLoggedIn(Vue.ls)) {
+                SessionStore.setReturnPath(Vue.ls, '/my-account');
+                next({path: '/login'});
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/login',
+        component: Login,
+        beforeEnter: (to, from, next) => {
+            if (SessionStore.IsLoggedIn(Vue.ls)) {
+                next({path: '/my-account'});
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/create-account',
+        component: CreateAccount,
+        beforeEnter: (to, from, next) => {
+            if (SessionStore.IsLoggedIn(Vue.ls)) {
+                next({path: '/my-account'});
+            } else {
+                next();
+            }
+        }
     }
 ];
 
