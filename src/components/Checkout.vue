@@ -60,10 +60,11 @@
                                     </tfoot>
                                 </table>
                                 <div class="cart_navigation">
-                                    <button class="button continue-shopping" type="button">
+                                    <button class="button continue-shopping" type="button"
+                                            v-on:click="onContinueShopping">
                                         <span>Continue shopping</span></button>&nbsp;
-                                    <button class="button continue-shopping" type="button">
-                                        <span>Choose Address</span></button>
+                                    <button class="button btn-checkout" type="button" v-on:click="onContinueShipping">
+                                        <span>Continue to Shipping</span></button>
                                 </div>
                             </div>
                         </div>
@@ -122,6 +123,12 @@
             onCartItemRemoveClicked: function (id) {
                 Cart.remove_item(this.$ls, id);
                 EventBus.$emit('cart-updated', true);
+            },
+            onContinueShopping: function () {
+                this.$router.push('/');
+            },
+            onContinueShipping: function () {
+                this.$router.push('/checkout-shipping');
             }
         }
     }

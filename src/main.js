@@ -10,6 +10,9 @@ import Checkout from "@/components/Checkout";
 import SessionStore from "@/common/session_store";
 import Login from "@/components/Login";
 import CreateAccount from "@/components/CreateAccount";
+import CheckoutShippingMethodSetup from "@/components/CheckoutShippingMethodSetup";
+import CheckoutBillingMethodSetup from "@/components/CheckoutBillingMethodSetup";
+import CheckoutReview from "@/components/CheckoutReview";
 
 Vue.use(vjquery);
 Vue.use(VueRouter);
@@ -36,6 +39,42 @@ const routes = [
     {
         path: '/checkout',
         component: Checkout,
+        beforeEnter: (to, from, next) => {
+            if (!SessionStore.IsLoggedIn(Vue.ls)) {
+                SessionStore.setReturnPath(Vue.ls, '/checkout');
+                next({path: '/login'});
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/checkout-shipping',
+        component: CheckoutShippingMethodSetup,
+        beforeEnter: (to, from, next) => {
+            if (!SessionStore.IsLoggedIn(Vue.ls)) {
+                SessionStore.setReturnPath(Vue.ls, '/checkout');
+                next({path: '/login'});
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/checkout-billing',
+        component: CheckoutBillingMethodSetup,
+        beforeEnter: (to, from, next) => {
+            if (!SessionStore.IsLoggedIn(Vue.ls)) {
+                SessionStore.setReturnPath(Vue.ls, '/checkout');
+                next({path: '/login'});
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/checkout-review',
+        component: CheckoutReview,
         beforeEnter: (to, from, next) => {
             if (!SessionStore.IsLoggedIn(Vue.ls)) {
                 SessionStore.setReturnPath(Vue.ls, '/checkout');
