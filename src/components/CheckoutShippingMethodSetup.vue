@@ -21,16 +21,18 @@
                                                     <ul>
                                                         <li class="row">
                                                             <div class="col-sm-6">
-                                                                <label for="first_name_1" class="required">Name</label>
-                                                                <input class="input form-control" type="text"
+                                                                <label for="first_name_1" class="required">Name*</label>
+                                                                <input v-model="name" class="input form-control"
+                                                                       type="text"
                                                                        id="first_name_1">
                                                             </div>
                                                             <!--/ [col] -->
 
                                                             <div class="col-sm-6">
-                                                                <label for="last_name_1" class="required">Email</label>
-                                                                <input class="input form-control" type="text"
-                                                                       id="last_name_1">
+                                                                <label for="email" class="required">Email*</label>
+                                                                <input v-model="email" class="input form-control"
+                                                                       type="text"
+                                                                       id="email">
                                                             </div>
                                                             <!--/ [col] -->
 
@@ -39,8 +41,9 @@
 
                                                         <li class="row">
                                                             <div class="col-xs-12">
-                                                                <label for="address_1" class="required">Address</label>
-                                                                <input class="input form-control" type="text"
+                                                                <label for="address_1" class="required">Address*</label>
+                                                                <input v-model="address" class="input form-control"
+                                                                       type="text"
                                                                        id="address_1">
                                                             </div>
                                                             <!--/ [col] -->
@@ -50,15 +53,17 @@
 
                                                         <li class="row">
                                                             <div class="col-sm-6">
-                                                                <label for="city_1" class="required">City</label>
-                                                                <input class="input form-control" type="text"
+                                                                <label for="city_1" class="required">City*</label>
+                                                                <input v-model="city" class="input form-control"
+                                                                       type="text"
                                                                        id="city_1">
                                                             </div>
                                                             <!--/ [col] -->
 
                                                             <div class="col-sm-6">
                                                                 <label for="state_1" class="required">State</label>
-                                                                <input class="input form-control" type="text"
+                                                                <input v-model="state" class="input form-control"
+                                                                       type="text"
                                                                        id="state_1">
                                                             </div>
                                                             <!--/ [col] -->
@@ -68,8 +73,9 @@
                                                         <li class="row">
                                                             <div class="col-sm-6">
                                                                 <label for="postal_code_1" class="required">Zip/Postal
-                                                                    Code</label>
-                                                                <input class="input form-control" type="text"
+                                                                    Code*</label>
+                                                                <input v-model="postal_code" class="input form-control"
+                                                                       type="text"
                                                                        id="postal_code_1">
                                                             </div>
                                                             <!--/ [col] -->
@@ -92,8 +98,9 @@
                                                         <li class="row">
                                                             <div class="col-sm-6">
                                                                 <label for="telephone_1"
-                                                                       class="required">Phone</label>
-                                                                <input class="input form-control" type="text"
+                                                                       class="required">Phone*</label>
+                                                                <input v-model="phone" class="input form-control"
+                                                                       type="text"
                                                                        id="telephone_1">
                                                             </div>
                                                             <!--/ [col] -->
@@ -108,9 +115,13 @@
                                                         shipping method available</h4>
 
                                                     <ul v-if="shipping_methods.length!==0" class="shipping_method">
+                                                        <!--/ [col] -->
                                                         <li v-for="s in shipping_methods" v-bind:key="s.id">
                                                             <label for="radio_button_3">
-                                                                <input type="radio" checked name="radio_3"
+                                                                <input type="radio"
+                                                                       v-bind:value="s.id"
+                                                                       v-on:change="onShippingMethodChange($event)"
+                                                                       name="radio_3"
                                                                        id="radio_button_3">
                                                                 {{ calculateShippingCharge(s) }}<br>
                                                                 Approximate Delivery in {{ s.approximate_delivery_time
@@ -118,8 +129,11 @@
                                                             </label>
                                                         </li>
                                                     </ul>
-                                                    <button class="button">Go to Overview</button>&nbsp;&nbsp;
-                                                    <button v-if="shipping_methods.length!==0" class="button">
+                                                    <button class="button" v-on:click="onBackToOverview">
+                                                        Go to Overview
+                                                    </button>&nbsp;&nbsp;
+                                                    <button v-if="shipping_methods.length!==0" class="button"
+                                                            v-on:click="onContinueBilling">
                                                         Continue to Billing
                                                     </button>
                                                 </div>
@@ -140,6 +154,7 @@
     import axios from "axios";
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
+    import Cart from "@/common/cart";
 
     export default {
         name: "CheckoutShippingMethodSetup",
@@ -147,7 +162,15 @@
             return {
                 locations: [],
                 shipping_methods: [],
-                selectedLocation: Object
+                selectedLocation: null,
+                selectedShippingMethod: null,
+                name: '',
+                email: '',
+                address: '',
+                city: '',
+                state: '',
+                postal_code: '',
+                phone: ''
             }
         },
         mounted() {
@@ -176,6 +199,7 @@
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(this.$ls)
                     }
                 }).then(resp => {
+                    this.shipping_methods = null;
                     this.shipping_methods = resp.data.data;
                     this.isLoading = false;
                 }).catch(err => {
@@ -185,17 +209,62 @@
             },
             onLocationChange: function (e) {
                 let id = e.target.value;
-                this.locations.forEach(item => {
-                    if (item.id === id) {
-                        this.selectedLocation = item;
+                for (let i in this.locations) {
+                    if (this.locations[i].id === Number(id)) {
+                        this.selectedLocation = this.locations[i];
                     }
-                });
+                }
+
                 this.listShippingMethods(id);
             },
             calculateShippingCharge: function (sm) {
                 let charge = sm.delivery_charge;
                 return sm.name + " - " + "Fee $" + (charge / 100)
-            }
+            },
+            onBackToOverview: function () {
+                this.$router.push('/checkout');
+            },
+            onContinueBilling: function () {
+                if (this.name === '' || this.email === '' || this.address === '' ||
+                    this.city === '' || this.postal_code === '' || this.phone === '') {
+                    alert('* marked fields are mandatory');
+                    return;
+                }
+
+                this.setShippingAddress({
+                    name: this.name,
+                    email: this.email,
+                    address: this.address,
+                    city: this.city,
+                    postal_code: this.postal_code,
+                    state: this.state,
+                    phone: this.phone,
+                    location: this.selectedLocation,
+                });
+
+                if (this.selectedShippingMethod === null) {
+                    alert('Please select a shipping method');
+                    return;
+                }
+
+                this.$router.push('/checkout-billing');
+            },
+            setShippingAddress: function (a) {
+                Cart.set_shipping_details(this.$ls, a);
+            },
+            setShippingMethod: function (sm) {
+                this.selectedShippingMethod = sm;
+                Cart.set_shipping_method(this.$ls, sm);
+            },
+            onShippingMethodChange: function (e) {
+                let id = e.target.value;
+                for (let i in this.shipping_methods) {
+                    if (this.shipping_methods[i].id === id) {
+                        this.setShippingMethod(this.shipping_methods[i]);
+                    }
+                }
+                console.log(this.selectedShippingMethod);
+            },
         }
     }
 </script>

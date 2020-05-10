@@ -6,9 +6,9 @@
                     <div class="page-content">
                         <ul class="step">
                             <li class="current-step"><span>Summary</span></li>
-                            <li><span>Address</span></li>
                             <li><span>Shipping</span></li>
                             <li><span>Payment</span></li>
+                            <li><span>Review</span></li>
                         </ul>
                         <div class="heading-counter warning">Your shopping cart contains: <span>{{ numberOfProducts }} Product(s)</span>
                         </div>

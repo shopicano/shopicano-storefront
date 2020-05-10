@@ -55,6 +55,50 @@ class Cart {
     static is_empty(ctx) {
         return ctx.get(this.key()) === null || ctx.get(this.key()) === undefined
     }
+
+    static set_billing_details(ctx, v) {
+        ctx.set(this.key() + '_billing_details', v)
+    }
+
+    static get_billing_details(ctx) {
+        return ctx.get(this.key() + '_billing_details')
+    }
+
+    static set_shipping_details(ctx, v) {
+        ctx.set(this.key() + '_shipping_details', v)
+    }
+
+    static get_shipping_details(ctx) {
+        return ctx.get(this.key() + '_shipping_details')
+    }
+
+    static set_shipping_method(ctx, v) {
+        ctx.set(this.key() + '_shipping_method', v)
+    }
+
+    static get_shipping_method(ctx) {
+        return ctx.get(this.key() + '_shipping_method')
+    }
+
+    static set_billing_method(ctx, v) {
+        ctx.set(this.key() + '_billing_method', v)
+    }
+
+    static get_billing_method(ctx) {
+        return ctx.get(this.key() + '_billing_method')
+    }
+
+    static get_cart_cost(ctx) {
+        let items = ctx.get(this.key());
+        if (items === null) {
+            return 0
+        }
+        let charge = 0;
+        for (let i in items) {
+            charge += items[i].price * items[i].quantity
+        }
+        return charge;
+    }
 }
 
 export default Cart;
