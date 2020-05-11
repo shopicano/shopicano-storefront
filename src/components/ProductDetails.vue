@@ -506,7 +506,7 @@
 
                     this.title = this.productDetails.name;
                     this.description = this.productDetails.description;
-                    this.image = this.productDetails.image;
+                    this.image = this.createImageUrl(this.productDetails.image);
 
                     console.log(document.head);
 
