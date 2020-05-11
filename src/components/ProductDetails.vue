@@ -475,7 +475,8 @@
                 sliderValue: 1,
                 productImages: [],
                 title: undefined,
-                description: undefined
+                description: undefined,
+                image: undefined
             }
         },
         mounted() {
@@ -505,6 +506,7 @@
 
                     this.title = this.productDetails.name;
                     this.description = this.productDetails.description;
+                    this.image = this.productDetails.image;
 
                     console.log(document.head);
 
@@ -570,6 +572,11 @@
                         property: 'og:url',
                         content: `${this.$route.fullPath}`,
                         vmid: 'og:url'
+                    },
+                    {
+                        property: 'og:image',
+                        content: `${this.image}`,
+                        vmid: 'og:image'
                     },
                     {
                         name: 'robots', content: 'index,follow'
