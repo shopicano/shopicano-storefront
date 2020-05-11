@@ -34,6 +34,27 @@
                     this.styleCss = '';
                 }
             });
+        },
+        metaInfo: {
+            title: "Shopicano - E-commerce framework for future",
+            meta: [
+                {
+                    name: 'description',
+                    content: 'Shopicano - E-commerce framework for future'
+                },
+                {
+                    property: 'og:title', content: "Shopicano - E-commerce framework for future"
+                },
+                {
+                    property: 'og:site_name', content: 'Shopicano'
+                },
+                {
+                    property: 'og:type', content: 'website'
+                },
+                {
+                    name: 'robots', content: 'index,follow'
+                }
+            ]
         }
     }
 </script>

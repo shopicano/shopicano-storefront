@@ -474,6 +474,7 @@
                 numberOfQuantity: 0,
                 sliderValue: 1,
                 productImages: [],
+                metas: [],
             }
         },
         mounted() {
@@ -500,6 +501,8 @@
                     if (Cart.is_added(this.$ls, this.productDetails.id)) {
                         this.numberOfQuantity = Cart.get_item(this.$ls, this.productDetails.id).quantity;
                     }
+
+                    console.log(document.head);
 
                     this.isLoading = false;
                 }).catch(err => {

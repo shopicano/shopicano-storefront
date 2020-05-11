@@ -13,9 +13,11 @@ import CreateAccount from "@/components/CreateAccount";
 import CheckoutShippingMethodSetup from "@/components/CheckoutShippingMethodSetup";
 import CheckoutBillingMethodSetup from "@/components/CheckoutBillingMethodSetup";
 import CheckoutReview from "@/components/CheckoutReview";
+import VueMeta from 'vue-meta'
 
 Vue.use(vjquery);
 Vue.use(VueRouter);
+Vue.use(VueMeta);
 
 let options = {
     namespace: 'shopicano__', // key prefix
