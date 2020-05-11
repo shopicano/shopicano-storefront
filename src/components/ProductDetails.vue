@@ -504,6 +504,7 @@
                         this.numberOfQuantity = Cart.get_item(this.$ls, this.productDetails.id).quantity;
                     }
 
+                    // Populating dynamic meta data
                     this.title = this.productDetails.name;
                     this.description = this.productDetails.description;
                     this.image = this.createImageUrl(this.productDetails.image);
