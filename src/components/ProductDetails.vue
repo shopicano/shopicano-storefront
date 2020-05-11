@@ -539,6 +539,30 @@
             createImageUrl: function (path) {
                 return Settings.GetMediaUrl() + path;
             },
+        },
+        metaInfo: {
+            title: `${this.productDetails.name} - Shopicano`,
+            meta: [
+                {
+                    name: 'description',
+                    content: `${this.productDetails.name}`
+                },
+                {
+                    property: 'og:title', content: `${this.productDetails.name}`
+                },
+                {
+                    property: 'og:site_name', content: 'Shopicano'
+                },
+                {
+                    property: 'og:type', content: 'website'
+                },
+                {
+                    property: 'og:url', content: `${this.$route.fullPath}`
+                },
+                {
+                    name: 'robots', content: 'index,follow'
+                }
+            ]
         }
     }
 </script>
