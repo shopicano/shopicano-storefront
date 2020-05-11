@@ -17,7 +17,9 @@ import VueMeta from 'vue-meta'
 
 Vue.use(vjquery);
 Vue.use(VueRouter);
-Vue.use(VueMeta);
+Vue.use(VueMeta, {
+    refreshOnceOnNavigation: true
+});
 
 let options = {
     namespace: 'shopicano__', // key prefix

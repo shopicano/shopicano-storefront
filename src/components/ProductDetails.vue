@@ -474,7 +474,8 @@
                 numberOfQuantity: 0,
                 sliderValue: 1,
                 productImages: [],
-                metas: [],
+                title: undefined,
+                description: undefined
             }
         },
         mounted() {
@@ -501,6 +502,9 @@
                     if (Cart.is_added(this.$ls, this.productDetails.id)) {
                         this.numberOfQuantity = Cart.get_item(this.$ls, this.productDetails.id).quantity;
                     }
+
+                    this.title = this.productDetails.name;
+                    this.description = this.productDetails.description;
 
                     console.log(document.head);
 
@@ -540,36 +544,38 @@
                 return Settings.GetMediaUrl() + path;
             },
         },
-        metaInfo: {
-            title: `${this.productDetails.name} - Shopicano`,
-            meta: [
-                {
-                    name: 'description',
-                    content: `${this.productDetails.description}`,
-                    vmid: 'description'
-                },
-                {
-                    property: 'og:title',
-                    content: `${this.productDetails.name}`,
-                    vmid: 'og:title'
-                },
-                {
-                    property: 'og:site_name',
-                    content: 'Shopicano',
-                    vmid: 'og:site_name'
-                },
-                {
-                    property: 'og:type', content: 'website'
-                },
-                {
-                    property: 'og:url',
-                    content: `${this.$route.fullPath}`,
-                    vmid: 'og:url'
-                },
-                {
-                    name: 'robots', content: 'index,follow'
-                }
-            ]
+        metaInfo() {
+            return {
+                title: `${this.title} - Shopicano`,
+                meta: [
+                    {
+                        name: 'description',
+                        content: `${this.description}`,
+                        vmid: 'description'
+                    },
+                    {
+                        property: 'og:title',
+                        content: `${this.title}`,
+                        vmid: 'og:title'
+                    },
+                    {
+                        property: 'og:site_name',
+                        content: 'Shopicano',
+                        vmid: 'og:site_name'
+                    },
+                    {
+                        property: 'og:type', content: 'website'
+                    },
+                    {
+                        property: 'og:url',
+                        content: `${this.$route.fullPath}`,
+                        vmid: 'og:url'
+                    },
+                    {
+                        name: 'robots', content: 'index,follow'
+                    }
+                ]
+            }
         }
     }
 </script>
