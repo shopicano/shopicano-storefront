@@ -545,19 +545,26 @@
             meta: [
                 {
                     name: 'description',
-                    content: `${this.productDetails.description}`
+                    content: `${this.productDetails.description}`,
+                    vmid: 'description'
                 },
                 {
-                    property: 'og:title', content: `${this.productDetails.name}`
+                    property: 'og:title',
+                    content: `${this.productDetails.name}`,
+                    vmid: 'og:title'
                 },
                 {
-                    property: 'og:site_name', content: 'Shopicano'
+                    property: 'og:site_name',
+                    content: 'Shopicano',
+                    vmid: 'og:site_name'
                 },
                 {
                     property: 'og:type', content: 'website'
                 },
                 {
-                    property: 'og:url', content: `${this.$route.fullPath}`
+                    property: 'og:url',
+                    content: `${this.$route.fullPath}`,
+                    vmid: 'og:url'
                 },
                 {
                     name: 'robots', content: 'index,follow'

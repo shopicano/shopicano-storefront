@@ -40,19 +40,27 @@
             meta: [
                 {
                     name: 'description',
-                    content: 'Shopicano - E-commerce framework for future'
+                    content: 'Shopicano - E-commerce framework for future',
+                    vmid: 'description'
                 },
                 {
-                    property: 'og:title', content: "Shopicano - E-commerce framework for future"
+                    property: 'og:title',
+                    content: "Shopicano - E-commerce framework for future",
+                    vmid: 'og:title'
                 },
                 {
-                    property: 'og:site_name', content: 'Shopicano'
+                    property: 'og:site_name',
+                    content: 'Shopicano',
+                    vmid: 'og:site_name'
                 },
                 {
-                    property: 'og:type', content: 'website'
+                    property: 'og:type',
+                    content: 'website',
+                    vmid: 'og:type'
                 },
                 {
-                    name: 'robots', content: 'index,follow'
+                    name: 'robots',
+                    content: 'index,follow'
                 }
             ]
         }
