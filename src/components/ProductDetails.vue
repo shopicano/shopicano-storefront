@@ -545,7 +545,7 @@
             meta: [
                 {
                     name: 'description',
-                    content: `${this.productDetails.name}`
+                    content: `${this.productDetails.description}`
                 },
                 {
                     property: 'og:title', content: `${this.productDetails.name}`
