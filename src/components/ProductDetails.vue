@@ -1,5 +1,6 @@
 <template>
-    <section class="main-container col1-layout">
+    <section class="main-container col1-layout body-bg">
+        <PleaseWait :isLoading="isLoading"/>
         <div class="main">
             <div class="container">
                 <div class="row">
@@ -464,10 +465,11 @@
     import Cart from "@/common/cart";
     import {Slider, SliderItem} from 'vue-easy-slider'
     import {EventBus} from "@/common/event-bus";
+    import PleaseWait from "@/components/PleaseWait";
 
     export default {
         name: "ProductDetails",
-        components: {Slider, SliderItem},
+        components: {Slider, SliderItem, PleaseWait},
         data() {
             return {
                 productDetails: Object,
@@ -476,10 +478,12 @@
                 productImages: [],
                 title: undefined,
                 description: undefined,
-                image: undefined
+                image: undefined,
+                isLoading: false
             }
         },
         mounted() {
+            this.isLoading = true;
             this.getProductDetails(this.$route.params.id);
         },
         methods: {

@@ -96,41 +96,24 @@
 </template>
 
 <script>
+    import PleaseWait from "@/components/PleaseWait";
     import {EventBus} from "@/common/event-bus";
     import Cart from "@/common/cart";
     import Settings from "@/common/settings";
     import axios from "axios";
     import SessionStore from "@/common/session_store";
-    import PleaseWait from "@/components/PleaseWait";
 
     export default {
-        name: "CheckoutReview",
+        name: "OrderDetails",
         components: {PleaseWait},
         data() {
             return {
-                cart_items: [],
-                numberOfProducts: 0,
-                subTotal: 0,
-                billingDetails: null,
-                shippingDetails: null,
-                shippingMedium: '',
-                shippingCharge: 0,
-                paymentMedium: '',
-                paymentCharge: 0,
-                billing_address_id: '',
-                shipping_address_id: '',
+                orderDetails: Object,
                 isLoading: false
             }
         },
         mounted() {
             this.isLoading = true;
-
-            EventBus.$on('cart-updated', ok => {
-                if (ok) {
-                    this.isLoading = true;
-                    this.checkoutStepCartReview();
-                }
-            });
 
             this.getBillingDetails();
             this.getShippingDetails();
@@ -304,23 +287,6 @@
 
                     this.generateNonce(order);
                 }).catch(err => {
-                    this.isLoading = false;
-                    this.errors = err.response.data.title;
-                });
-            },
-            generateNonce: function (order) {
-                axios.post(`${Settings.GetUserApiUrl()}/orders/${order.id}/nonce`, null, {
-                    headers: {
-                        "Authorization": "Bearer " + SessionStore.GetAccessToken(this.$ls)
-                    }
-                }).then(resp => {
-                    // eslint-disable-next-line no-undef
-                    const stripe = new Stripe('pk_test_rECiPLLc0kPItaVZMT633ekD');
-                    stripe.redirectToCheckout({
-                        sessionId: resp.data.data.nonce,
-                    });
-                }).catch(err => {
-                    console.log(err);
                     this.isLoading = false;
                     this.errors = err.response.data.title;
                 });

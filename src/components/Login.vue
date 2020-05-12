@@ -1,5 +1,6 @@
 <template>
     <section class="main-container col1-layout">
+        <PleaseWait :isLoading="isLoading"/>
         <div class="main container">
             <div class="account-login">
                 <div class="page-title">
@@ -51,17 +52,22 @@
     import axios from "axios";
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
+    import PleaseWait from "@/components/PleaseWait";
 
     export default {
         name: "Login",
+        components: {PleaseWait},
         data() {
             return {
                 emailAddress: '',
-                password: ''
+                password: '',
+                isLoading: false
             }
         },
         methods: {
             login: function () {
+                this.isLoading = true;
+
                 axios.post(`${Settings.GetUserApiUrl()}/login`, {
                     email: this.emailAddress,
                     password: this.password

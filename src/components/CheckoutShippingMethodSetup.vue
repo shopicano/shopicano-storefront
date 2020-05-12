@@ -1,5 +1,6 @@
 <template>
     <section class="main-container col1-layout">
+        <PleaseWait :isLoading="isLoading"/>
         <div class="main container">
             <div class="col-main">
                 <div class="shopping-cart-inner">
@@ -155,9 +156,11 @@
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
     import Cart from "@/common/cart";
+    import PleaseWait from "@/components/PleaseWait";
 
     export default {
         name: "CheckoutShippingMethodSetup",
+        components: {PleaseWait},
         data() {
             return {
                 locations: [],
@@ -170,10 +173,12 @@
                 city: '',
                 state: '',
                 postal_code: '',
-                phone: ''
+                phone: '',
+                isLoading: false
             }
         },
         mounted() {
+            this.isLoading = true;
             this.getLocations();
         },
         methods: {
@@ -193,6 +198,8 @@
                 })
             },
             listShippingMethods: function (locationId) {
+                this.isLoading = true;
+
                 let url = `${Settings.GetUserApiUrl()}/locations/` + locationId + `/shipping-methods`;
                 axios.get(url, {
                     headers: {
@@ -208,6 +215,8 @@
                 })
             },
             onLocationChange: function (e) {
+                this.isLoading = true;
+
                 let id = e.target.value;
                 for (let i in this.locations) {
                     if (this.locations[i].id === Number(id)) {

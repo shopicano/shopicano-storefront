@@ -1,5 +1,6 @@
 <template>
     <section class="main-container col1-layout">
+        <PleaseWait :isLoading="isLoading"/>
         <div class="main container">
             <div class="col-main">
                 <div class="shopping-cart-inner">
@@ -80,19 +81,25 @@
     // import axios from "axios";
     import Settings from "@/common/settings";
     import Cart from "@/common/cart";
+    import PleaseWait from "@/components/PleaseWait";
 
     export default {
         name: "Checkout",
+        components: {PleaseWait},
         data() {
             return {
                 cart_items: [],
                 numberOfProducts: 0,
-                subTotal: 0
+                subTotal: 0,
+                isLoading: false
             }
         },
         mounted() {
+            this.isLoading = true;
+
             EventBus.$on('cart-updated', ok => {
                 if (ok) {
+                    this.isLoading = true;
                     this.checkoutStepCartReview();
                 }
             });
@@ -113,6 +120,8 @@
                     this.subTotal += (this.cart_items[i].price * this.cart_items[i].quantity);
                     this.numberOfProducts += this.cart_items[i].quantity;
                 }
+
+                this.isLoading = false;
             },
             createImageUrl: function (path) {
                 return Settings.GetMediaUrl() + path;

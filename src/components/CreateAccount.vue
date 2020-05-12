@@ -1,5 +1,6 @@
 <template>
     <section class="main-container col1-layout">
+        <PleaseWait :isLoading="isLoading"/>
         <div class="main container">
             <div class="account-login">
                 <div class="col-md-4 hidden-xs"></div>
