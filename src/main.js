@@ -14,6 +14,7 @@ import CheckoutShippingMethodSetup from "@/components/CheckoutShippingMethodSetu
 import CheckoutBillingMethodSetup from "@/components/CheckoutBillingMethodSetup";
 import CheckoutReview from "@/components/CheckoutReview";
 import VueMeta from 'vue-meta'
+import OrderDetails from "@/components/OrderDetails";
 
 Vue.use(vjquery);
 Vue.use(VueRouter);
@@ -89,6 +90,18 @@ const routes = [
     {
         path: '/my-account',
         component: Checkout,
+        beforeEnter: (to, from, next) => {
+            if (!SessionStore.IsLoggedIn(Vue.ls)) {
+                SessionStore.setReturnPath(Vue.ls, '/my-account');
+                next({path: '/login'});
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: '/order-history/:id',
+        component: OrderDetails,
         beforeEnter: (to, from, next) => {
             if (!SessionStore.IsLoggedIn(Vue.ls)) {
                 SessionStore.setReturnPath(Vue.ls, '/my-account');

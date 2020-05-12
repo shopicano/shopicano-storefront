@@ -5,17 +5,57 @@
             <div class="col-main">
                 <div class="shopping-cart-inner">
                     <div class="page-content">
-                        <ul class="step">
-                            <li><span>Summary</span></li>
-                            <li><span>Shipping</span></li>
-                            <li><span>Payment</span></li>
-                            <li class="current-step"><span>Review</span></li>
-                        </ul>
-                        <div class="heading-counter warning">
-                            Your shopping cart contains: <span>{{ numberOfProducts }} Product(s)</span>
-                        </div>
                         <div class="table-responsive">
                             <div class="order-detail-content">
+                                <table class="table table-bordered jtv-cart-summary">
+                                    <tbody>
+                                    <tr>
+                                        <td colspan="2"><strong>OrderID</strong></td>
+                                        <td colspan="3" class="price"><strong>#{{ orderDetails.hash }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><strong>Store</strong></td>
+                                        <td colspan="3" class="price"><strong>{{ orderDetails.store_name }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="!orderDetails.is_all_digital_products">
+                                        <td colspan="2"><strong>Order Status</strong></td>
+                                        <td colspan="3" class="price"><strong>{{ orderDetails.status
+                                            }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><strong>Payment Gateway</strong></td>
+                                        <td colspan="3" class="price"><strong>{{ orderDetails.payment_gateway
+                                            }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><strong>Payment Status</strong></td>
+                                        <td colspan="3" class="price"><strong>{{ orderDetails.payment_status
+                                            }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><strong>Payment Method</strong></td>
+                                        <td colspan="3" class="price"><strong>{{ orderDetails.payment_method_name
+                                            }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="!orderDetails.is_all_digital_products">
+                                        <td colspan="2"><strong>Shipping Method</strong></td>
+                                        <td colspan="3" class="price"><strong>{{ orderDetails.shipping_method_name
+                                            }} (Delivery in {{ orderDetails.approximate_delivery_time }} days)</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><strong>Order Initiated</strong></td>
+                                        <td colspan="3" class="price"><strong>{{ orderDetails.created_at }}</strong>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                                 <table class="table table-bordered jtv-cart-summary">
                                     <thead>
                                     <tr>
@@ -24,10 +64,11 @@
                                         <th>Unit price</th>
                                         <th>Qty</th>
                                         <th>Sub Total</th>
+                                        <th v-if="orderDetails.is_all_digital_products"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="item in cart_items" v-bind:key="item.id">
+                                    <tr v-for="item in orderDetails.items" v-bind:key="item.id">
                                         <td class="cart_product">
                                             <a href="#">
                                                 <img class="img-responsive" v-bind:src="createImageUrl(item.image)"
@@ -44,49 +85,48 @@
                                             <span>{{ item.quantity }}</span>
                                         </td>
                                         <td class="price"><span>${{ item.quantity * item.price }}</span></td>
+                                        <td class="price">
+                                            <button v-on:click="onDownloadClicked(orderDetails, item)">Download</button>
+                                        </td>
                                     </tr>
                                     </tbody>
                                     <tfoot>
                                     <tr>
                                         <td colspan="1"></td>
                                         <td colspan="3"><strong>Sub Total</strong></td>
-                                        <td colspan="2"><strong>${{ subTotal }}</strong></td>
+                                        <td colspan="2"><strong>${{ orderDetails.sub_total }}</strong></td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="2"><strong>{{ shippingMedium }}</strong></td>
+                                    <tr v-if="!orderDetails.is_all_digital_products">
+                                        <td colspan="2"><strong></strong></td>
                                         <td colspan="2">Shipping charge</td>
-                                        <td colspan="2"><strong>${{ shippingCharge }}</strong></td>
+                                        <td colspan="2"><strong>${{ orderDetails.shipping_charge }}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><strong>{{ paymentMedium }}</strong></td>
+                                        <td colspan="2"><strong></strong></td>
                                         <td colspan="2">Payment processing fee</td>
-                                        <td colspan="2"><strong>${{ paymentCharge }}</strong></td>
+                                        <td colspan="2"><strong>${{ orderDetails.payment_processing_fee }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="1"></td>
                                         <td colspan="3"><strong>Total</strong></td>
-                                        <td colspan="2"><strong>${{ subTotal+paymentCharge+shippingCharge }}</strong>
+                                        <td colspan="2">
+                                            <strong>
+                                                ${{ orderDetails.grand_total }}
+                                            </strong>
                                         </td>
                                     </tr>
                                     </tfoot>
                                 </table>
-                                <div class="cart_navigation">
-                                    <button class="button continue-shopping" type="button"
-                                            v-on:click="onContinueBilling">
-                                        <span>Go to billing</span></button>&nbsp;
-                                    <button class="button btn-checkout" type="button" v-on:click="onPlaceOrder">
-                                        <span>Place Order</span></button>
-                                </div>
                             </div>
                         </div>
 
                         <div class="heading-counter warning">
                             <h3 class="checkout-sep">Billing Address</h3><br>
-                            {{ billingDetails }}
+                            {{ getFormattedAddressBilling(orderDetails) }}
                         </div>
                         <div class="heading-counter warning">
                             <h3 class="checkout-sep">Shipping Address</h3><br>
-                            {{ shippingDetails }}
+                            {{ getFormattedAddressShipping(orderDetails) }}
                         </div>
                     </div>
                 </div>
@@ -97,8 +137,6 @@
 
 <script>
     import PleaseWait from "@/components/PleaseWait";
-    import {EventBus} from "@/common/event-bus";
-    import Cart from "@/common/cart";
     import Settings from "@/common/settings";
     import axios from "axios";
     import SessionStore from "@/common/session_store";
@@ -114,137 +152,21 @@
         },
         mounted() {
             this.isLoading = true;
-
-            this.getBillingDetails();
-            this.getShippingDetails();
-            this.checkoutStepCartReview();
-            this.calculateShippingCharge(Cart.get_shipping_method(this.$ls));
-            this.calculatePaymentProcessingFee(Cart.get_billing_method(this.$ls));
-
-            this.isLoading = false;
+            this.getOrderDetails();
         },
         methods: {
-            checkoutStepCartReview: function () {
-                this.cart_items = Cart.get(this.$ls);
-                this.numberOfProducts = 0;
-                this.subTotal = 0;
-
-                if (Cart.is_empty(this.$ls)) {
-                    this.cart_items = []
-                }
-
-                for (let i = 0; i < this.cart_items.length; i++) {
-                    this.subTotal += (this.cart_items[i].price * this.cart_items[i].quantity);
-                    this.numberOfProducts += this.cart_items[i].quantity;
-                }
-            },
             createImageUrl: function (path) {
                 return Settings.GetMediaUrl() + path;
             },
-            onCheckoutClicked: function () {
-                this.$router.push('/checkout')
-            },
-            onCartItemRemoveClicked: function (id) {
-                Cart.remove_item(this.$ls, id);
-                EventBus.$emit('cart-updated', true);
-            },
-            onContinueBilling: function () {
-                this.$router.push('/checkout-billing');
-            },
-            getBillingDetails: function () {
-                let billingAddress = '';
-                let d = Cart.get_billing_details(this.$ls);
+            getOrderDetails: function () {
+                let orderId = this.$route.params.id;
 
-                billingAddress += d.name;
-                billingAddress += ', ' + d.address;
-                billingAddress += ', ' + d.city;
-                if (d.state !== '') {
-                    billingAddress += ', ' + d.state;
-                }
-                billingAddress += ', ' + d.postal_code;
-                billingAddress += ', ' + d.location.name;
-                billingAddress += ', ' + d.email;
-                billingAddress += ', ' + d.phone;
-
-                this.billingDetails = billingAddress;
-            },
-            getShippingDetails: function () {
-                let shippingAddress = '';
-                let d = Cart.get_shipping_details(this.$ls);
-
-                shippingAddress += d.name;
-                shippingAddress += ', ' + d.address;
-                shippingAddress += ', ' + d.city;
-                if (d.state !== '') {
-                    shippingAddress += ', ' + d.state;
-                }
-                shippingAddress += ', ' + d.postal_code;
-                shippingAddress += ', ' + d.location.name;
-                shippingAddress += ', ' + d.email;
-                shippingAddress += ', ' + d.phone;
-
-                this.shippingDetails = shippingAddress;
-            },
-            calculatePaymentProcessingFee: function (pm) {
-                let cost = 10;
-                let charge;
-                if (pm.is_flat) {
-                    charge = pm.processing_fee / 100;
-                } else {
-                    charge = (cost * pm.processing_fee) / 100;
-                    if (pm.max_processing_fee !== 0 && charge > pm.max_processing_fee) {
-                        charge = pm.max_processing_fee;
-                    } else if (pm.min_processing_fee !== 0 && charge < pm.min_processing_fee) {
-                        charge = pm.min_processing_fee;
-                    }
-                }
-
-                this.paymentMedium = pm.name;
-                this.paymentCharge = charge;
-            },
-            calculateShippingCharge: function (sm) {
-                let charge = sm.delivery_charge / 100;
-                this.shippingMedium = sm.name + ' (Approximate Delivery in ' + sm.approximate_delivery_time + ' days)';
-                this.shippingCharge = charge;
-            },
-            onPlaceOrder: function () {
-                this.isLoading = true;
-
-                this.createAddresses(1);
-            },
-            createAddresses: function (t) {
-                let d;
-
-                if (t === 1) {
-                    d = Cart.get_billing_details(this.$ls)
-                } else {
-                    d = Cart.get_shipping_details(this.$ls)
-                }
-
-                let body = {};
-                body.name = d.name;
-                body.address = d.address;
-                body.country_id = d.location.id;
-                body.city = d.city;
-                body.state = d.state;
-                body.postcode = d.postal_code;
-                body.email = d.email;
-                body.phone = d.phone;
-
-                axios.post(`${Settings.GetUserApiUrl()}/addresses`, body, {
+                axios.get(`${Settings.GetUserApiUrl()}/orders/${orderId}`, {
                     headers: {
                         "Authorization": "Bearer " + SessionStore.GetAccessToken(this.$ls)
                     }
                 }).then(resp => {
-                    let data = resp.data.data;
-                    if (t === 1) {
-                        this.billing_address_id = data.id;
-                        this.createAddresses(2);
-                    } else {
-                        this.shipping_address_id = data.id;
-                        this.createOrder();
-                    }
-
+                    this.orderDetails = resp.data.data;
                     this.isLoading = false;
                 }).catch(err => {
                     console.log(err);
@@ -253,43 +175,17 @@
                     this.errors = err.response.data.title;
                 })
             },
-            createOrder: function () {
-                let body = {};
-                body.payment_method_id = Cart.get_billing_method(this.$ls).id;
-                body.billing_address_id = this.billing_address_id;
-                body.shipping_method_id = Cart.get_shipping_method(this.$ls).id;
-                body.shipping_address_id = this.shipping_address_id;
-
-                let cart_items = Cart.get(this.$ls);
-                let items = [];
-
-                for (let i in cart_items) {
-                    items.push({
-                        id: cart_items[i].id,
-                        quantity: cart_items[i].quantity
-                    })
-                }
-
-                body.items = items;
-
-                console.log(body);
-
-                axios.post(`${Settings.GetUserApiUrl()}/orders`, body, {
-                    headers: {
-                        "Authorization": "Bearer " + SessionStore.GetAccessToken(this.$ls)
-                    }
-                }).then(resp => {
-                    let order = resp.data.data;
-                    if (order.grand_total === 0) {
-                        this.$router.push(`/#/order-history/${order.id}`);
-                        return
-                    }
-
-                    this.generateNonce(order);
-                }).catch(err => {
-                    this.isLoading = false;
-                    this.errors = err.response.data.title;
-                });
+            getFormattedAddressShipping: function (addr) {
+                return addr.shipping_name + ', ' + addr.shipping_address + ', ' + addr.shipping_city + ', ' + addr.shipping_country +
+                    ', ' + addr.shipping_postcode + ', ' + addr.shipping_email + ', ' + addr.shipping_phone;
+            },
+            getFormattedAddressBilling: function (addr) {
+                return addr.billing_name + ', ' + addr.billing_address + ', ' + addr.billing_city + ', ' + addr.billing_country +
+                    ', ' + addr.billing_postcode + ', ' + addr.billing_email + ', ' + addr.billing_phone;
+            },
+            onDownloadClicked: function (order, item) {
+                let url = `${Settings.GetUserApiUrl()}/orders/${order.id}/products/${item.product_id}/download?Authorization=${SessionStore.GetAccessToken(this.$ls)}`;
+                window.open(url, '_blank');
             }
         }
     }
