@@ -39,33 +39,35 @@
                                             <!--                                            <small class="cart_ref">SKU : #987654</small><br>-->
                                             <!--                                            <small><a href="#">Color : Pink</a></small><br>-->
                                         </td>
-                                        <td class="price"><span>${{ item.price }}</span></td>
+                                        <td class="price"><span>${{ toDisplayUnit(item.price) }}</span></td>
                                         <td class="qty">
                                             <span>{{ item.quantity }}</span>
                                         </td>
-                                        <td class="price"><span>${{ item.quantity * item.price }}</span></td>
+                                        <td class="price"><span>${{ toDisplayUnit(item.quantity * item.price) }}</span>
+                                        </td>
                                     </tr>
                                     </tbody>
                                     <tfoot>
                                     <tr>
                                         <td colspan="1"></td>
                                         <td colspan="3"><strong>Sub Total</strong></td>
-                                        <td colspan="2"><strong>${{ subTotal }}</strong></td>
+                                        <td colspan="2"><strong>${{ toDisplayUnit(subTotal) }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><strong>{{ shippingMedium }}</strong></td>
                                         <td colspan="2">Shipping charge</td>
-                                        <td colspan="2"><strong>${{ shippingCharge }}</strong></td>
+                                        <td colspan="2"><strong>${{ toDisplayUnit(shippingCharge) }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><strong>{{ paymentMedium }}</strong></td>
                                         <td colspan="2">Payment processing fee</td>
-                                        <td colspan="2"><strong>${{ paymentCharge }}</strong></td>
+                                        <td colspan="2"><strong>${{ toDisplayUnit(paymentCharge) }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="1"></td>
                                         <td colspan="3"><strong>Total</strong></td>
-                                        <td colspan="2"><strong>${{ subTotal+paymentCharge+shippingCharge }}</strong>
+                                        <td colspan="2"><strong>${{ toDisplayUnit(subTotal+paymentCharge+shippingCharge)
+                                            }}</strong>
                                         </td>
                                     </tr>
                                     </tfoot>
@@ -220,7 +222,7 @@
                 this.paymentCharge = charge;
             },
             calculateShippingCharge: function (sm) {
-                let charge = sm.delivery_charge / 100;
+                let charge = sm.delivery_charge;
                 this.shippingMedium = sm.name + ' (Approximate Delivery in ' + sm.approximate_delivery_time + ' days)';
                 this.shippingCharge = charge;
             },
@@ -261,8 +263,6 @@
                         this.shipping_address_id = data.id;
                         this.createOrder();
                     }
-
-                    this.isLoading = false;
                 }).catch(err => {
                     console.log(err);
 
@@ -302,6 +302,8 @@
                         return
                     }
 
+                    Cart.clear(this.$ls);
+
                     this.generateNonce(order);
                 }).catch(err => {
                     this.isLoading = false;
@@ -324,6 +326,10 @@
                     this.isLoading = false;
                     this.errors = err.response.data.title;
                 });
+            },
+            toDisplayUnit(v) {
+                console.log('--> ' + v);
+                return (v / 100).toFixed(2)
             }
         }
     }

@@ -228,7 +228,7 @@
             },
             calculateShippingCharge: function (sm) {
                 let charge = sm.delivery_charge;
-                return sm.name + " - " + "Fee $" + (charge / 100)
+                return sm.name + " - " + "Fee $" + this.toDisplayUnit(charge)
             },
             onBackToOverview: function () {
                 this.$router.push('/checkout');
@@ -274,6 +274,9 @@
                 }
                 console.log(this.selectedShippingMethod);
             },
+            toDisplayUnit(v) {
+                return (v / 100).toFixed(2)
+            }
         }
     }
 </script>

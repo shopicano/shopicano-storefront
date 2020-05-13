@@ -52,6 +52,10 @@ class Cart {
         return ctx.get(this.key())
     }
 
+    static clear_cart(ctx) {
+        return ctx.remove(this.key())
+    }
+
     static is_empty(ctx) {
         return ctx.get(this.key()) === null || ctx.get(this.key()) === undefined
     }
@@ -64,12 +68,20 @@ class Cart {
         return ctx.get(this.key() + '_billing_details')
     }
 
+    static clear_billing_details(ctx) {
+        return ctx.remove(this.key() + '_billing_details')
+    }
+
     static set_shipping_details(ctx, v) {
         ctx.set(this.key() + '_shipping_details', v)
     }
 
     static get_shipping_details(ctx) {
         return ctx.get(this.key() + '_shipping_details')
+    }
+
+    static clear_shipping_details(ctx) {
+        return ctx.remove(this.key() + '_shipping_details')
     }
 
     static set_shipping_method(ctx, v) {
@@ -80,12 +92,20 @@ class Cart {
         return ctx.get(this.key() + '_shipping_method')
     }
 
+    static clear_shipping_method(ctx) {
+        return ctx.remove(this.key() + '_shipping_method')
+    }
+
     static set_billing_method(ctx, v) {
         ctx.set(this.key() + '_billing_method', v)
     }
 
     static get_billing_method(ctx) {
         return ctx.get(this.key() + '_billing_method')
+    }
+
+    static clear_billing_method(ctx) {
+        return ctx.remove(this.key() + '_billing_method')
     }
 
     static get_cart_cost(ctx) {
@@ -98,6 +118,14 @@ class Cart {
             charge += items[i].price * items[i].quantity
         }
         return charge;
+    }
+
+    static clear(ctx) {
+        this.clear_cart(ctx);
+        this.clear_billing_details(ctx);
+        this.clear_billing_method(ctx);
+        this.clear_shipping_details(ctx);
+        this.clear_shipping_method(ctx);
     }
 }
 

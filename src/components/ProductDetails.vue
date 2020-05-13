@@ -40,7 +40,8 @@
                                                 <p class="special-price"><span
                                                         class="price-label">Special Price</span> <span
                                                         id="product-price-48"
-                                                        class="price"> ${{productDetails.price}} </span></p>
+                                                        class="price"> ${{toDisplayUnit(productDetails.price)}} </span>
+                                                </p>
                                                 <!--                                                <p class="old-price"><span-->
                                                 <!--                                                        class="price-label">Regular Price:</span> <span-->
                                                 <!--                                                        class="price"> $ {{ productDetails.price }} </span></p>-->
@@ -527,7 +528,7 @@
                 if (this.numberOfQuantity + change < 0) {
                     return
                 }
-                if (this.productDetails.max_quantity_count !== 0 && (this.numberOfQuantity + change) <= this.productDetails.max_quantity_count) {
+                if (this.productDetails.max_quantity_count !== 0 && (this.numberOfQuantity + change) <= this.productDetails.max_quantity_count && (this.numberOfQuantity + change) <= this.productDetails.stock) {
                     this.numberOfQuantity += change;
                 }
             },
@@ -550,6 +551,9 @@
             createImageUrl: function (path) {
                 return Settings.GetMediaUrl() + path;
             },
+            toDisplayUnit(v) {
+                return (v / 100).toFixed(2)
+            }
         },
         metaInfo() {
             return {

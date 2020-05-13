@@ -80,11 +80,12 @@
                                             <!--                                            <small class="cart_ref">SKU : #987654</small><br>-->
                                             <!--                                            <small><a href="#">Color : Pink</a></small><br>-->
                                         </td>
-                                        <td class="price"><span>${{ item.price }}</span></td>
+                                        <td class="price"><span>${{ toDisplayUnit(item.price) }}</span></td>
                                         <td class="qty">
                                             <span>{{ item.quantity }}</span>
                                         </td>
-                                        <td class="price"><span>${{ item.quantity * item.price }}</span></td>
+                                        <td class="price"><span>${{ toDisplayUnit(item.quantity * item.price) }}</span>
+                                        </td>
                                         <td class="price">
                                             <button v-on:click="onDownloadClicked(orderDetails, item)">Download</button>
                                         </td>
@@ -94,24 +95,27 @@
                                     <tr>
                                         <td colspan="1"></td>
                                         <td colspan="3"><strong>Sub Total</strong></td>
-                                        <td colspan="2"><strong>${{ orderDetails.sub_total }}</strong></td>
+                                        <td colspan="2"><strong>${{ toDisplayUnit(orderDetails.sub_total) }}</strong>
+                                        </td>
                                     </tr>
                                     <tr v-if="!orderDetails.is_all_digital_products">
                                         <td colspan="2"><strong></strong></td>
                                         <td colspan="2">Shipping charge</td>
-                                        <td colspan="2"><strong>${{ orderDetails.shipping_charge }}</strong></td>
+                                        <td colspan="2"><strong>${{ toDisplayUnit(orderDetails.shipping_charge)
+                                            }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><strong></strong></td>
                                         <td colspan="2">Payment processing fee</td>
-                                        <td colspan="2"><strong>${{ orderDetails.payment_processing_fee }}</strong></td>
+                                        <td colspan="2"><strong>${{ toDisplayUnit(orderDetails.payment_processing_fee)
+                                            }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="1"></td>
                                         <td colspan="3"><strong>Total</strong></td>
                                         <td colspan="2">
                                             <strong>
-                                                ${{ orderDetails.grand_total }}
+                                                ${{ toDisplayUnit(orderDetails.grand_total) }}
                                             </strong>
                                         </td>
                                     </tr>
@@ -186,6 +190,10 @@
             onDownloadClicked: function (order, item) {
                 let url = `${Settings.GetUserApiUrl()}/orders/${order.id}/products/${item.product_id}/download?Authorization=${SessionStore.GetAccessToken(this.$ls)}`;
                 window.open(url, '_blank');
+            },
+            toDisplayUnit(v) {
+                console.log('--> ' + v);
+                return (v / 100).toFixed(2)
             }
         }
     }

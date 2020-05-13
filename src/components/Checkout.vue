@@ -39,14 +39,15 @@
                                             <!--                                            <small class="cart_ref">SKU : #987654</small><br>-->
                                             <!--                                            <small><a href="#">Color : Pink</a></small><br>-->
                                         </td>
-                                        <td class="price"><span>${{ item.price }}</span></td>
+                                        <td class="price"><span>${{ toDisplayUnit(item.price) }}</span></td>
                                         <td class="qty">
                                             <input class="form-control input-sm" type="text"
                                                    v-bind:value="item.quantity">
                                             <a href="#"><i class="fa fa-plus"></i></a>
                                             <a href="#"><i class="fa fa-minus"></i></a>
                                         </td>
-                                        <td class="price"><span>${{ item.quantity * item.price }}</span></td>
+                                        <td class="price"><span>${{ toDisplayUnit(item.quantity * item.price) }}</span>
+                                        </td>
                                         <td class="action">
                                             <a v-on:click="onCartItemRemoveClicked(item.id)">Remove</a>
                                         </td>
@@ -56,7 +57,7 @@
                                     <tr>
                                         <td colspan="1"></td>
                                         <td colspan="3"><strong>Total</strong></td>
-                                        <td colspan="2"><strong>${{ subTotal }}</strong></td>
+                                        <td colspan="2"><strong>${{ toDisplayUnit(subTotal) }}</strong></td>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -138,6 +139,9 @@
             },
             onContinueShipping: function () {
                 this.$router.push('/checkout-shipping');
+            },
+            toDisplayUnit(v) {
+                return (v / 100).toFixed(2)
             }
         }
     }

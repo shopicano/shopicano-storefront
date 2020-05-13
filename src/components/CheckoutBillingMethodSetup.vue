@@ -235,7 +235,7 @@
                         charge = pm.min_processing_fee;
                     }
                 }
-                return pm.name + " - " + "Fee $" + charge;
+                return pm.name + " - " + "Fee $" + this.toDisplayUnit(charge);
             },
             onBackToShipping: function () {
                 this.$router.push('/checkout-shipping');
@@ -282,6 +282,9 @@
 
                 console.log(this.selectedPaymentMethod);
             },
+            toDisplayUnit(v) {
+                return (v / 100).toFixed(2)
+            }
         }
     }
 </script>

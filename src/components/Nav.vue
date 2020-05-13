@@ -62,12 +62,12 @@
                                                             <a v-bind:href="'/#/products/'+i.slug">{{ i.name }}</a>
                                                         </p>
                                                         <strong>{{ i.quantity }}</strong> x <span
-                                                            class="price">${{ i.price }}</span>
+                                                            class="price">${{ toDisplayUnit(i.price) }}</span>
                                                     </div>
                                                 </li>
                                             </ul>
                                             <div v-if="number_of_items!==0" class="top-subtotal">Subtotal: <span
-                                                    class="price">${{ sub_total }}</span></div>
+                                                    class="price">${{ toDisplayUnit(sub_total) }}</span></div>
                                             <div v-if="number_of_items!==0" class="actions">
                                                 <button class="btn-checkout" type="button"
                                                         v-on:click="onCheckoutClicked">
@@ -164,6 +164,9 @@
             onCartItemRemoveClicked: function (id) {
                 Cart.remove_item(this.$ls, id);
                 this.populateFromCart();
+            },
+            toDisplayUnit(v) {
+                return (v / 100).toFixed(2)
             }
         }
     }

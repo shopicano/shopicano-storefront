@@ -37,7 +37,7 @@
                                         <div class="price-box">
                                             <p class="special-price">
                                                 <span class="price-label"></span><span
-                                                    class="price">${{ p.price }}</span></p>
+                                                    class="price">${{ toDisplayUnit(p.price) }}</span></p>
                                         </div>
                                         <div class="actions">
                                             <a class="button btn-cart" v-bind:href="'/#/products/'+p.slug">
@@ -180,6 +180,9 @@
             onPageChange: function (newPage) {
                 this.currentPage = newPage;
                 this.listProducts();
+            },
+            toDisplayUnit(v) {
+                return (v / 100).toFixed(2)
             }
         }
     }
