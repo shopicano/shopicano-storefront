@@ -5,6 +5,11 @@
             <div class="col-main">
                 <div class="shopping-cart-inner">
                     <div class="page-content">
+                        <div class="form-share">
+                            <div class="sendtofriend-print">
+                                <a href="javascript:print();"><i class="fa fa-print"></i> Print</a>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <div class="order-detail-content">
                                 <table class="table table-bordered jtv-cart-summary">

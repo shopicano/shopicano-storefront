@@ -205,7 +205,7 @@
                 this.shippingDetails = shippingAddress;
             },
             calculatePaymentProcessingFee: function (pm) {
-                let cost = 10;
+                let cost = this.subTotal + this.shippingCharge;
                 let charge;
                 if (pm.is_flat) {
                     charge = pm.processing_fee / 100;

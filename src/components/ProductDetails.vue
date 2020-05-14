@@ -112,12 +112,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-share">
-                                            <div class="sendtofriend-print"><a href="javascript:print();"><i
-                                                    class="fa fa-print"></i> Print</a> <a href="#"><i
-                                                    class="fa fa-envelope-o fa-fw"></i> Send to a friend</a>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -531,19 +525,36 @@
                 if (this.productDetails.max_quantity_count !== 0 && (this.numberOfQuantity + change) <= this.productDetails.max_quantity_count && (this.numberOfQuantity + change) <= this.productDetails.stock) {
                     this.numberOfQuantity += change;
                 }
+                if (this.productDetails.is_digital && this.numberOfQuantity > 1) {
+                    this.numberOfQuantity = 1;
+                }
             },
             onAddToCart: function () {
                 if (this.numberOfQuantity === 0) {
                     return
                 }
 
+                if (!Cart.is_same_store(this.$ls, this.productDetails.store_id)) {
+                    alert(`You can't add products from multiple store at a time`);
+                    return;
+                }
+
+                if (!Cart.is_same_type(this.$ls, this.productDetails.is_digital)) {
+                    alert(`You can't add physical and digital products together`);
+                    return;
+                }
+
                 Cart.add(this.$ls, {
                     id: this.productDetails.id,
+                    store_id: this.productDetails.store_id,
                     quantity: this.numberOfQuantity,
                     name: this.productDetails.name,
                     image: this.productDetails.image,
                     price: this.productDetails.price,
-                    slug: this.productDetails.slug
+                    slug: this.productDetails.slug,
+                    is_digital: this.productDetails.is_digital,
+                    max_quantity_count: this.productDetails.max_quantity_count,
+                    stock: this.productDetails.stock
                 });
 
                 EventBus.$emit('cart-updated', true);

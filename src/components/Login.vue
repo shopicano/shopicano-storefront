@@ -53,6 +53,7 @@
     import Settings from "@/common/settings";
     import SessionStore from "@/common/session_store";
     import PleaseWait from "@/components/PleaseWait";
+    import {EventBus} from "@/common/event-bus";
 
     export default {
         name: "Login",
@@ -74,6 +75,7 @@
                 }).then(resp => {
                     let result = resp.data.data;
                     SessionStore.SetSession(this.$ls, result);
+                    EventBus.$emit('nav-refresh', true);
                     this.$router.push(SessionStore.getReturnPath(this.$ls));
                     this.isLoading = false;
                 }).catch(err => {

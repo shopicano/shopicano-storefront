@@ -15,6 +15,8 @@ import CheckoutBillingMethodSetup from "@/components/CheckoutBillingMethodSetup"
 import CheckoutReview from "@/components/CheckoutReview";
 import VueMeta from 'vue-meta'
 import OrderDetails from "@/components/OrderDetails";
+import Dashboard from "@/components/Dashboard";
+import {EventBus} from "@/common/event-bus";
 
 Vue.use(vjquery);
 Vue.use(VueRouter);
@@ -89,7 +91,7 @@ const routes = [
     },
     {
         path: '/my-account',
-        component: Checkout,
+        component: Dashboard,
         beforeEnter: (to, from, next) => {
             if (!SessionStore.IsLoggedIn(Vue.ls)) {
                 SessionStore.setReturnPath(Vue.ls, '/my-account');
@@ -120,6 +122,15 @@ const routes = [
             } else {
                 next();
             }
+        }
+    },
+    {
+        path: '/logout',
+        component: Login,
+        beforeEnter: (to, from, next) => {
+            SessionStore.CleanSession(Vue.ls);
+            EventBus.$emit('nav-refresh', true);
+            next({path: '/login'});
         }
     },
     {

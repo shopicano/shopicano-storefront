@@ -19,6 +19,54 @@ class Cart {
         ctx.set(this.key(), prev)
     }
 
+    static adjust_quantity(ctx, id, change) {
+        if (!this.is_added(ctx, id)) {
+            return
+        }
+
+        let items = this.get(ctx);
+        let selectedItem = Object;
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].id === id) {
+                selectedItem = items[i];
+                break;
+            }
+        }
+
+        selectedItem.quantity += change;
+        this.add(ctx, selectedItem);
+    }
+
+    static is_same_store(ctx, value) {
+        if (this.is_empty(ctx)) {
+            return true;
+        }
+
+        let items = this.get(ctx);
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].store_id === value) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    static is_same_type(ctx, value) {
+        if (this.is_empty(ctx)) {
+            return true;
+        }
+
+        let items = this.get(ctx);
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].is_digital === value) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     static is_added(ctx, id) {
         return this.get_item(ctx, id) !== null
     }
@@ -57,7 +105,7 @@ class Cart {
     }
 
     static is_empty(ctx) {
-        return ctx.get(this.key()) === null || ctx.get(this.key()) === undefined
+        return ctx.get(this.key()) === null || ctx.get(this.key()) === undefined || ctx.get(this.key()).length === 0
     }
 
     static set_billing_details(ctx, v) {

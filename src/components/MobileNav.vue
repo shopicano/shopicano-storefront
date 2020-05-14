@@ -8,10 +8,15 @@
         </ul>
         <div class="jtv-top-link-mob">
             <ul class="links">
-                <li><a title="My Account" href="/#/my-account">My Account</a></li>
-                <li><a title="Wishlist" href="/#/wishlist">Wishlist</a></li>
+                <li v-if="is_logged_in"><a title="My Account" href="/#/my-account">My Account</a></li>
+                <li v-if="is_logged_in"><a title="Wishlist" href="/#/wishlist">Wishlist</a></li>
                 <li><a title="Checkout" href="/#/checkout">Checkout</a></li>
-                <li class="last"><a title="Login" href="/#/login"><span>Login</span></a></li>
+                <li v-if="is_logged_in" class="last"><a href="/#/logout">
+                    <span>Logout</span></a>
+                </li>
+                <li v-if="!is_logged_in" class="last"><a href="/#/login">
+                    <span>Login</span></a>
+                </li>
             </ul>
         </div>
     </div>
@@ -21,22 +26,32 @@
     import {EventBus} from "@/common/event-bus";
     import axios from "axios";
     import Settings from "@/common/settings";
+    import SessionStore from "@/common/session_store";
 
     export default {
         name: "MobileNav",
         data() {
             return {
                 categories: [],
-                styleCss: ''
+                styleCss: '',
+                is_logged_in: false
             }
         },
         mounted() {
+            this.is_logged_in = SessionStore.IsLoggedIn(this.$ls);
+
             EventBus.$on('nav-action', isOpen => {
                 if (isOpen) {
                     this.styleCss = 'left: 0px; width: 250px; height: 11988px; display: block; overflow: hidden;';
                 } else {
                     this.styleCss = '';
                 }
+            });
+
+            EventBus.$on('nav-refresh', isOpen => {
+                console.log(isOpen);
+
+                this.is_logged_in = SessionStore.IsLoggedIn(this.$ls);
             });
 
             this.listCategories();

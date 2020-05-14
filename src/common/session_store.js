@@ -17,10 +17,10 @@ class SessionStore {
         return token !== null && now < expireOn;
     }
 
-    static CleanSession() {
-        localStorage.removeItem('shopicano_access_token');
-        localStorage.removeItem('shopicano_refresh_token');
-        localStorage.removeItem('shopicano_expire_on');
+    static CleanSession(ctx) {
+        ctx.remove('shopicano_access_token');
+        ctx.remove('shopicano_refresh_token');
+        ctx.remove('shopicano_expire_on');
     }
 
     static isUnauthorized(err) {

@@ -15,7 +15,7 @@
                         </div>
                         <div class="table-responsive">
                             <div class="order-detail-content">
-                                <table class="table table-bordered jtv-cart-summary">
+                                <table v-if="numberOfProducts!==0" class="table table-bordered jtv-cart-summary">
                                     <thead>
                                     <tr>
                                         <th class="cart_product"></th>
@@ -43,8 +43,10 @@
                                         <td class="qty">
                                             <input class="form-control input-sm" type="text"
                                                    v-bind:value="item.quantity">
-                                            <a href="#"><i class="fa fa-plus"></i></a>
-                                            <a href="#"><i class="fa fa-minus"></i></a>
+                                            <a v-on:click="adjustQuantity(item,1)"><i
+                                                    class="fa fa-plus"></i></a>
+                                            <a v-on:click="adjustQuantity(item,-1)"><i
+                                                    class="fa fa-minus"></i></a>
                                         </td>
                                         <td class="price"><span>${{ toDisplayUnit(item.quantity * item.price) }}</span>
                                         </td>
@@ -65,7 +67,8 @@
                                     <button class="button continue-shopping" type="button"
                                             v-on:click="onContinueShopping">
                                         <span>Continue shopping</span></button>&nbsp;
-                                    <button class="button btn-checkout" type="button" v-on:click="onContinueShipping">
+                                    <button v-if="numberOfProducts!==0" class="button btn-checkout" type="button"
+                                            v-on:click="onContinueShipping">
                                         <span>Continue to Shipping</span></button>
                                 </div>
                             </div>
@@ -142,6 +145,23 @@
             },
             toDisplayUnit(v) {
                 return (v / 100).toFixed(2)
+            },
+            adjustQuantity: function (item, change) {
+                if (item.is_digital && !(item.quantity + change <= 0)) {
+                    return
+                }
+
+                this.isLoading = true;
+
+                if (item.max_quantity_count !== 0 && (item.quantity + change) <= item.max_quantity_count && (item.quantity + change) <= item.stock) {
+                    if (item.quantity + change <= 0) {
+                        Cart.remove_item(this.$ls, item.id);
+                    } else {
+                        Cart.adjust_quantity(this.$ls, item.id, change);
+                    }
+                }
+
+                EventBus.$emit('cart-updated', true);
             }
         }
     }

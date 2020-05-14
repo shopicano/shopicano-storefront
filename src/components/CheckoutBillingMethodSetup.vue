@@ -223,19 +223,11 @@
                 this.listPaymentMethods(id);
             },
             calculatePaymentProcessingFee: function (pm) {
-                let cost = 10;
-                let charge;
                 if (pm.is_flat) {
-                    charge = pm.processing_fee / 100;
+                    return pm.name + " - " + "Fee $" + this.toDisplayUnit(pm.processing_fee);
                 } else {
-                    charge = (cost * pm.processing_fee) / 100;
-                    if (pm.max_processing_fee !== 0 && charge > pm.max_processing_fee) {
-                        charge = pm.max_processing_fee;
-                    } else if (pm.min_processing_fee !== 0 && charge < pm.min_processing_fee) {
-                        charge = pm.min_processing_fee;
-                    }
+                    return pm.name + " - " + "Fee " + pm.processing_fee + "%";
                 }
-                return pm.name + " - " + "Fee $" + this.toDisplayUnit(charge);
             },
             onBackToShipping: function () {
                 this.$router.push('/checkout-shipping');

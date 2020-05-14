@@ -39,10 +39,15 @@
                         <!-- top links -->
                         <div class="toplinks col-md-7 col-sm-8 col-xs-12 hidden-xs">
                             <ul class="links">
-                                <li><a title="My Account" href="/#/my-account">My Account</a></li>
-                                <li><a title="Wishlist" href="/#/wishlist">Wishlist</a></li>
+                                <li v-if="is_logged_in"><a title="My Account" href="/#/my-account">My Account</a></li>
+                                <li v-if="is_logged_in"><a title="Wishlist" href="/#/wishlist">Wishlist</a></li>
                                 <li><a title="Checkout" href="/#/checkout">Checkout</a></li>
-                                <li class="last"><a title="Login" href="/#/login"><span>Login</span></a></li>
+                                <li v-if="is_logged_in" class="last"><a href="/#/logout">
+                                    <span>Logout</span></a>
+                                </li>
+                                <li v-if="!is_logged_in" class="last"><a href="/#/login">
+                                    <span>Login</span></a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -56,9 +61,27 @@
 
 <script>
     import Nav from "@/components/Nav";
+    import SessionStore from "@/common/session_store";
+    import {EventBus} from "@/common/event-bus";
 
     export default {
         name: "Header",
         components: {Nav},
+        data() {
+            return {
+                is_logged_in: false
+            }
+        },
+        mounted() {
+            this.is_logged_in = SessionStore.IsLoggedIn(this.$ls);
+
+            EventBus.$on('nav-refresh', isOpen => {
+                console.log(isOpen);
+
+                this.is_logged_in = SessionStore.IsLoggedIn(this.$ls);
+            });
+        },
+        methods: {}
     }
 </script>
+s
